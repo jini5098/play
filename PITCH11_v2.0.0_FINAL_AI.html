@@ -1,0 +1,1149 @@
+<!doctype html>
+<!-- PITCH 11 v2.0.0 final AI intelligence engine -->
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#081522">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+<meta name="description" content="PITCH 11 — AI 축구 클럽. 선수 영입, 클럽 운영, 전술형 팀 AI, 고속 강화학습을 갖춘 축구 게임.">
+<meta name="application-name" content="PITCH 11">
+<title>PITCH 11 · AI 풋볼 클럽</title>
+<style>
+:root{--bg:#08121d;--panel:#101e2c;--panel2:#152638;--line:#284055;--muted:#90a4b7;--gold:#f7d46a;--cyan:#67d8ec;--green:#75e0a2;--red:#ff737d;--white:#eef5fb}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#193149 0%,#0b1723 45%,#07111b 100%);color:var(--white);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#1b3042;color:var(--white);padding:10px 14px;border-radius:10px;font-weight:750;transition:.15s}button:hover{filter:brightness(1.14);transform:translateY(-1px)}button:disabled{opacity:.4;cursor:not-allowed;transform:none}button.primary{background:linear-gradient(135deg,#f7db80,#dcae42);border-color:#ffe7a0;color:#17202a}button.secondary{background:transparent}button.danger{background:#482631;border-color:#864653}
+#app{width:min(1440px,96vw);margin:0 auto;padding:18px 0 32px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:0 4px 18px}.brand{display:flex;align-items:center;gap:12px}.logo{width:45px;height:45px;border-radius:14px;background:linear-gradient(145deg,#f8dc82,#bf9033);display:grid;place-items:center;color:#172330;font-size:25px;box-shadow:0 8px 26px #e4b84a24}.brand h1{font-size:22px;letter-spacing:1.8px;margin:0}.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:2px;margin-top:2px}.version-tag{display:inline-block;color:#e4c36a;border:1px solid #e4c36a55;border-radius:5px;padding:1px 4px;font-size:8px;letter-spacing:.4px;margin-left:3px}.wallet{display:flex;align-items:center;gap:10px}.wallet-item{padding:9px 13px;background:#122334;border:1px solid var(--line);border-radius:12px;font-size:13px}.wallet-item b{color:var(--gold);margin-left:5px;font-variant-numeric:tabular-nums}
+.nav{display:flex;gap:7px;padding:6px;background:#0c1a27;border:1px solid var(--line);border-radius:14px;width:max-content;margin:0 0 18px 2px}.nav button{border:0;background:transparent;color:var(--muted);padding:9px 18px}.nav button.active{background:#263d50;color:#fff;box-shadow:inset 0 0 0 1px #46647a}
+.view{display:none}.view.active{display:block}.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 2px 12px}.section-head h2{margin:0;font-size:20px}.section-head p{margin:4px 0 0;color:var(--muted);font-size:12px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--cyan);font-weight:800;margin-bottom:5px}
+.match-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start}.pitch-card,.side-card,.club-panel,.collection-panel{background:linear-gradient(145deg,#122233,#0e1c2a);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px #0003}.pitch-head{padding:12px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}.live-mark{font-size:10px;letter-spacing:1.4px;color:#ff8b91;font-weight:900}.fixture{font-size:13px;color:#d6e3ee}.scoreline{font-weight:900;font-size:20px;letter-spacing:1px}.scoreline span{color:var(--gold);padding:0 8px}.canvas-wrap{padding:8px;background:#08150f;position:relative}canvas{display:block;width:100%;height:auto;border-radius:9px;background:#247b42;touch-action:none}.pitch-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 14px;color:var(--muted);font-size:11px}.pitch-foot b{color:#fff}.side-stack{display:grid;gap:12px}.side-card{padding:14px}.side-title{font-size:11px;letter-spacing:1.5px;color:var(--muted);font-weight:850;margin-bottom:12px}.selected-card{display:flex;gap:12px;align-items:center}.avatar{width:52px;height:58px;border-radius:12px;background:linear-gradient(145deg,#1d8fe8,#12436e);display:grid;place-items:center;font-size:23px;font-weight:900;border:1px solid #8ed0ff66}.selected-card h3{margin:0;font-size:15px}.selected-card p{margin:4px 0 0;color:var(--muted);font-size:11px}.stat-bars{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:13px}.stat-row{font-size:10px;color:var(--muted)}.stat-row span{display:flex;justify-content:space-between;margin-bottom:4px}.bar{height:5px;border-radius:9px;background:#263c4d;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#53b9dc,#93e7d1);border-radius:9px}.team-mini{display:grid;gap:7px}.mini-player{display:flex;align-items:center;gap:8px;padding:7px 8px;background:#0e1a27;border:1px solid #25394b;border-radius:9px;font-size:11px}.mini-player .dot{width:8px;height:8px;border-radius:50%;background:#268df0}.mini-player small{margin-left:auto;color:var(--muted)}.match-controls{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.match-controls button{flex:1;min-width:110px}.hint{color:var(--muted);font-size:11px;line-height:1.7;margin-top:10px}
+.club-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-bottom:14px}.club-panel{padding:16px}.club-name{display:flex;align-items:center;gap:12px}.club-crest{width:58px;height:62px;clip-path:polygon(8% 0,92% 0,86% 76%,50% 100%,14% 76%);background:linear-gradient(150deg,#287fc3,#122e4e);display:grid;place-items:center;font-size:26px;border:1px solid #7ac5f4}.club-name h2{margin:0;font-size:20px}.club-name p{margin:4px 0 0;color:var(--muted);font-size:12px}.overall{margin-left:auto;text-align:right}.overall strong{font-size:34px;color:var(--gold);line-height:1}.overall small{display:block;color:var(--muted);font-size:10px;letter-spacing:1px}.formation{display:grid;gap:10px;margin-top:16px}.lineup-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.lineup-slot{position:relative;min-height:90px;border:1px dashed #456176;border-radius:12px;padding:9px;background:linear-gradient(145deg,#152b3c,#102131);text-align:left;color:#fff}.lineup-slot.active{border:1px solid var(--gold);box-shadow:0 0 0 2px #f7d46a25}.lineup-slot .pos{font-size:9px;letter-spacing:1px;color:var(--cyan);font-weight:900}.lineup-slot strong{display:block;font-size:12px;margin-top:7px}.lineup-slot small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.slot-rating{position:absolute;right:9px;top:7px;font-size:15px;color:var(--gold);font-weight:900}.slot-user{background:linear-gradient(145deg,#1a3b53,#112739);border-style:solid}.lineup-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.lineup-actions button{font-size:11px;padding:8px 10px}.collection-panel{padding:16px}.collection-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}.collection-top h3{margin:0;font-size:15px}.collection-top p{margin:3px 0 0;color:var(--muted);font-size:11px}.filter-row{display:flex;gap:5px;flex-wrap:wrap}.filter-row button{font-size:10px;padding:6px 9px;background:#102131;color:var(--muted)}.filter-row button.active{border-color:#e6c76c;color:var(--gold)}.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:11px}.player-card{position:relative;overflow:hidden;border-radius:13px;padding:10px;border:1px solid #667887;background:linear-gradient(155deg,#73818c,#263642 68%,#152330);min-height:216px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px #0003}.player-card:before{content:"";position:absolute;width:170px;height:170px;border-radius:50%;background:#ffffff15;top:-95px;right:-60px}.player-card.common{background:linear-gradient(155deg,#8998a4,#364957 70%,#182a38);border-color:#9baab6}.player-card.rare{background:linear-gradient(155deg,#3ba3db,#1c4a78 70%,#142b48);border-color:#70caff}.player-card.epic{background:linear-gradient(155deg,#af78ed,#583b91 68%,#241c4a);border-color:#d1afff}.player-card.legend{background:linear-gradient(155deg,#f0c56a,#91602c 64%,#382719);border-color:#ffe5a2;box-shadow:0 0 18px #e3b75328}.card-top,.card-mid,.card-bottom{position:relative;z-index:1}.card-top{display:flex;justify-content:space-between;align-items:start}.ovr{font-weight:950;font-size:27px;line-height:1}.position{font-size:10px;font-weight:900;letter-spacing:1px;margin-top:4px}.rarity{font-size:8px;letter-spacing:1px;font-weight:900;padding:4px 6px;border:1px solid #ffffff55;border-radius:20px;background:#07152255}.card-mid{text-align:center;padding:12px 0 10px}.player-silhouette{width:58px;height:68px;margin:0 auto 7px;display:grid;place-items:center;font-size:36px;text-shadow:0 3px 8px #0008;filter:drop-shadow(0 5px 4px #0005)}.card-mid strong{display:block;font-size:13px}.card-mid small{display:block;font-size:9px;opacity:.8;margin-top:3px}.card-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;text-align:center;border-top:1px solid #ffffff33;padding-top:8px}.card-stats b{display:block;font-size:12px}.card-stats small{font-size:8px;opacity:.78}.card-actions{display:flex;gap:5px;margin-top:8px}.card-actions button{flex:1;font-size:10px;padding:7px 5px;background:#081725aa;border-color:#ffffff4a}.card-actions button.equipped{color:#9ce9bd;border-color:#80d7a8}.card-actions button:disabled{opacity:.5}.pack-hero{border:1px solid #5c4e35;background:radial-gradient(ellipse at 50% 0%,#77542d66,#1c2c3b 60%,#10202e);border-radius:18px;padding:28px 18px;text-align:center;position:relative;overflow:hidden}.pack-art{width:170px;height:230px;margin:0 auto 15px;clip-path:polygon(11% 0,89% 0,100% 86%,50% 100%,0 86%);background:linear-gradient(145deg,#f6dc8b,#a46d2d 48%,#24354c 49%,#102236);border:2px solid #ffe5a2;box-shadow:0 15px 40px #0007;display:grid;place-items:center;position:relative}.pack-art:before{content:"";position:absolute;inset:10px;border:1px solid #fff9;clip-path:polygon(11% 0,89% 0,100% 86%,50% 100%,0 86%)}.pack-art span{font-size:68px;text-shadow:0 5px 10px #0008}.pack-hero h2{margin:4px 0 6px;font-size:23px;letter-spacing:1px}.pack-hero p{margin:0 auto 17px;color:#c2d0da;font-size:12px;line-height:1.6;max-width:480px}.pack-odds{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:15px 0}.odds{padding:6px 9px;border-radius:7px;background:#0d1d2a;border:1px solid var(--line);font-size:10px}.pack-open{min-width:190px;padding:13px 20px;font-size:14px}.pack-note{color:var(--muted);font-size:10px;margin-top:11px}.overlay{display:none;position:fixed;inset:0;background:#02080edc;z-index:10;align-items:center;justify-content:center;padding:18px}.overlay.show{display:flex}.reveal{width:min(430px,96vw);text-align:center;border:1px solid #8b764a;border-radius:18px;padding:20px;background:radial-gradient(ellipse at top,#35475a,#101d2b 72%);box-shadow:0 25px 90px #000b}.reveal h2{margin:0 0 7px}.reveal p{font-size:12px;color:var(--muted);margin:0 0 14px}.reveal .player-card{width:190px;margin:0 auto 16px;min-height:258px}.reveal-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,15px);opacity:0;pointer-events:none;background:#14283a;border:1px solid #7091a9;padding:10px 15px;border-radius:10px;font-size:12px;z-index:20;transition:.2s;box-shadow:0 7px 30px #0008}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:980px){.match-grid{grid-template-columns:1fr}.side-stack{grid-template-columns:repeat(2,minmax(0,1fr))}.club-hero{grid-template-columns:1fr}}
+@media(max-width:620px){#app{width:100%;padding:12px 10px 26px}.topbar{padding-bottom:12px}.brand h1{font-size:18px}.wallet-item{font-size:11px;padding:7px 9px}.nav{width:100%;display:grid;grid-template-columns:repeat(3,1fr);margin-bottom:13px}.nav button{padding:9px 5px;font-size:12px}.side-stack{grid-template-columns:1fr}.lineup-row{grid-template-columns:repeat(2,1fr)}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.player-card{min-height:205px;padding:8px}.pitch-head{padding:9px}.fixture{font-size:11px}.scoreline{font-size:18px}.section-head h2{font-size:18px}}
+
+/* Timed fixtures + dedicated AI lab */
+.match-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 14px;border-top:1px solid var(--line);background:#0e1c29}
+.match-actions label{font-size:11px;color:var(--muted);font-weight:800;letter-spacing:.5px}
+.match-actions select{background:#14283a;color:#fff;border:1px solid #3b566c;border-radius:9px;padding:9px 11px;font:inherit}
+.match-actions button{min-width:118px}
+.match-state{margin-left:auto;color:var(--muted);font-size:11px;font-weight:800}
+.result-panel{display:none;padding:14px 16px;border-top:1px solid var(--line);background:linear-gradient(120deg,#182d3d,#101d2a)}
+.result-panel.show{display:block}
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.result-head strong{font-size:18px;color:var(--gold)}
+.result-head span{font-size:12px;color:var(--muted)}
+.result-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.result-stat{padding:9px;background:#0c1a27;border:1px solid #2c4255;border-radius:10px;text-align:center}
+.result-stat b{display:block;font-size:18px;color:#fff}
+.result-stat small{font-size:9px;color:var(--muted);letter-spacing:1px}
+.lab-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-bottom:14px}
+.lab-panel{background:linear-gradient(145deg,#122233,#0e1c2a);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 14px 40px #0003}
+.lab-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}
+.lab-kpi{padding:12px;background:#0c1a27;border:1px solid #2b4154;border-radius:12px}
+.lab-kpi strong{font-size:23px;color:var(--gold);display:block}
+.lab-kpi small{color:var(--muted);font-size:10px;letter-spacing:1px}
+.training-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:13px}
+.training-controls select{background:#14283a;color:#fff;border:1px solid #3b566c;border-radius:9px;padding:9px 11px;font:inherit}
+.training-status{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.6}
+.brain-teams{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.brain-team{background:linear-gradient(145deg,#122233,#0e1c2a);border:1px solid var(--line);border-radius:18px;padding:15px}
+.brain-team h3{margin:0 0 12px;font-size:14px;display:flex;align-items:center;gap:8px}
+.brain-list{display:grid;gap:9px}
+.brain-card{border:1px solid #294155;border-radius:12px;padding:11px;background:#0c1a27}
+.brain-card-head{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.brain-badge{width:33px;height:36px;display:grid;place-items:center;border-radius:8px;background:#183d59;color:#bde5ff;font-weight:950}
+.brain-card-head strong{font-size:12px}
+.brain-card-head small{display:block;color:var(--muted);font-size:9px;margin-top:2px}
+.brain-meta{margin-left:auto;text-align:right;color:var(--muted);font-size:9px;line-height:1.6}
+.action-probs{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.action-prob{min-width:0}
+.action-prob span{display:flex;justify-content:space-between;gap:2px;font-size:8px;color:var(--muted);margin-bottom:4px}
+.action-prob span b{color:#eaf3fa}
+.prob-bar{height:5px;background:#23394b;border-radius:10px;overflow:hidden}
+.prob-bar i{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,#40a9df,#9ce4c0)}
+.brain-footer{display:flex;justify-content:space-between;gap:6px;margin-top:8px;color:var(--muted);font-size:9px}
+.log-list{display:grid;gap:8px}
+.log-item{display:grid;grid-template-columns:72px 1fr auto;gap:10px;align-items:center;padding:10px 11px;border:1px solid #2a4052;background:#0c1a27;border-radius:10px}
+.log-time{font-size:9px;color:var(--muted)}
+.log-copy strong{display:block;font-size:11px}
+.log-copy small{display:block;color:var(--muted);font-size:9px;margin-top:3px;line-height:1.4}
+.log-tag{font-size:9px;font-weight:900;color:var(--gold);white-space:nowrap}
+.empty-log{color:var(--muted);padding:18px;text-align:center;border:1px dashed #375066;border-radius:12px;font-size:12px}
+.lab-section{margin-top:14px}
+@media(max-width:900px){.match-grid{grid-template-columns:1fr}.lab-hero{grid-template-columns:1fr}.brain-teams{grid-template-columns:1fr}}
+@media(max-width:560px){.result-stats{grid-template-columns:repeat(2,1fr)}.lab-kpis{grid-template-columns:repeat(3,1fr)}.action-probs{gap:3px}.action-prob span{font-size:7px}.log-item{grid-template-columns:55px 1fr}.log-tag{grid-column:2}}
+
+
+/* Chromebook-first landing menu and immersive, viewport-fitted match */
+html,body{width:100%;min-height:100%;}
+#app{width:min(1180px,94vw);padding:12px 0 14px;}
+.home-shell{min-height:calc(100dvh - 165px);display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:24px;padding:clamp(18px,3vw,38px);border:1px solid #2c465b;border-radius:26px;overflow:hidden;background:radial-gradient(ellipse at 78% 45%,#1e3d55 0%,#122638 42%,#0c1a28 100%);box-shadow:0 22px 70px #0005;}
+.home-copy{max-width:650px;position:relative;z-index:2;}
+.home-copy h2{font-size:clamp(34px,4.5vw,58px);line-height:1.08;letter-spacing:-1.7px;margin:8px 0 14px;font-weight:950;}
+.home-copy h2 em{font-style:normal;color:var(--gold);}
+.home-copy>p{max-width:540px;color:#b3c4d2;font-size:clamp(12px,1.15vw,15px);line-height:1.8;margin:0 0 22px;}
+.home-start-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+.home-start-row label{font-size:11px;font-weight:850;color:var(--muted);letter-spacing:.5px;}
+.home-start-row select{background:#14283a;color:#fff;border:1px solid #3b566c;border-radius:10px;padding:12px 14px;font:inherit;}
+.home-kickoff{padding:13px 24px;border-radius:11px;font-size:14px;box-shadow:0 8px 24px #d6ad4a30;}
+.home-shortcuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;}
+.home-shortcuts button{min-width:0;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:5px;padding:12px;background:#0a1724aa;border-color:#38536a;border-radius:13px;}
+.home-shortcuts button span{font-size:19px;}
+.home-shortcuts button b{font-size:11px;white-space:nowrap;}
+.home-shortcuts button small{font-size:9px;color:var(--muted);white-space:nowrap;}
+.home-art{height:min(62vh,510px);min-height:300px;position:relative;display:grid;place-items:center;isolation:isolate;}
+.art-glow{position:absolute;width:min(35vw,390px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#69c6ed40 0%,#1c5a8060 38%,transparent 70%);filter:blur(5px);}
+.art-orbit{position:absolute;width:min(34vw,360px);aspect-ratio:1;border:1px solid #79b9d966;border-radius:50%;transform:rotate(-28deg) scaleY(.55);}
+.orbit-two{width:min(28vw,300px);transform:rotate(48deg) scaleY(.62);border-color:#f5d77977;}
+.art-ball{position:relative;font-size:clamp(110px,18vw,210px);filter:drop-shadow(0 26px 28px #0009);transform:rotate(-13deg);}
+.art-label{position:absolute;font-size:10px;font-weight:950;letter-spacing:3px;color:#d6e7f1;}
+.label-top{top:12%;right:2%;}.label-bottom{bottom:10%;left:5%;color:var(--gold);}
+.art-stat{position:absolute;padding:10px 14px;border:1px solid #6e91a8;background:#071421c9;border-radius:12px;box-shadow:0 12px 28px #0005;backdrop-filter:blur(8px);}
+.art-stat small{display:block;font-size:8px;letter-spacing:1.5px;color:var(--muted);font-weight:900;}
+.art-stat b{font-size:28px;color:var(--gold);line-height:1.2;}
+.stat-one{left:2%;top:22%;}.stat-two{right:1%;bottom:21%;}
+.nav{margin-bottom:12px;}
+/* The match has no page chrome: only pitch, scoreboard, clock and controls remain. */
+body.immersive-match{overflow:hidden;width:100vw;height:100dvh;min-height:0;background:#07110c;}
+body.immersive-match #app{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;margin:0;padding:0;overflow:hidden;}
+body.immersive-match .topbar,body.immersive-match .nav{display:none!important;}
+body.immersive-match main{width:100%;height:100%;margin:0;padding:0;}
+body.immersive-match #match{display:block!important;position:fixed;inset:0;width:100vw;height:100dvh;margin:0;padding:0;overflow:hidden;background:#1c6536;}
+body.immersive-match #match>.section-head,body.immersive-match .side-stack{display:none!important;}
+body.immersive-match .match-grid{display:block;width:100%;height:100%;margin:0;padding:0;}
+body.immersive-match .pitch-card{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0;box-shadow:none;background:#1c6536;overflow:hidden;}
+body.immersive-match .canvas-wrap{position:absolute;inset:0;width:100%;height:100%;padding:0;background:#1c6536;overflow:hidden;}
+body.immersive-match canvas{position:absolute;inset:0;width:100%;height:100%;max-width:none;border-radius:0;display:block;}
+body.immersive-match .pitch-head{position:absolute;z-index:5;top:max(10px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:min(420px,calc(100vw - 230px));padding:8px 16px;gap:12px;justify-content:center;border:1px solid #ffffff38;border-radius:14px;background:#071521df;box-shadow:0 10px 30px #0005;backdrop-filter:blur(10px);}
+body.immersive-match .pitch-head>div:first-child{display:none;}
+body.immersive-match .scoreline{font-size:clamp(20px,3vw,29px);white-space:nowrap;}
+body.immersive-match .pitch-head .fixture{font-size:clamp(16px,2vw,22px);font-weight:900;color:#fff;}
+body.immersive-match .match-actions{position:absolute;z-index:6;top:max(10px,env(safe-area-inset-top));right:max(10px,env(safe-area-inset-right));display:flex;gap:7px;padding:0;border:0;background:transparent;}
+body.immersive-match .match-actions button{min-width:0;padding:9px 13px;border-color:#ffffff55;background:#071521df;box-shadow:0 8px 24px #0004;font-size:11px;}
+body.immersive-match .match-actions button.primary{background:linear-gradient(135deg,#f7db80,#dcae42);color:#17202a;border-color:#ffe7a0;}
+body.immersive-match .match-state{display:none;}
+body.immersive-match .pitch-foot{position:absolute;z-index:5;left:max(10px,env(safe-area-inset-left));bottom:max(10px,env(safe-area-inset-bottom));padding:8px 12px;border:1px solid #ffffff35;border-radius:12px;background:#071521d9;backdrop-filter:blur(8px);font-size:clamp(9px,.9vw,11px);box-shadow:0 8px 22px #0004;}
+body.immersive-match .pitch-foot span:last-child{display:none;}
+body.immersive-match .result-panel{position:absolute;z-index:9;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,92vw);max-height:88dvh;overflow:auto;border:1px solid #7895a9;border-radius:20px;background:#0a1927f2;box-shadow:0 25px 90px #000c;backdrop-filter:blur(14px);}
+body.immersive-match .result-panel.show{display:block;}
+.goal-timeline{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px;padding:10px 12px;background:#0b1a27;border:1px solid #30485b;border-radius:10px}.goal-timeline strong{font-size:10px;color:var(--gold);margin-right:5px}.goal-timeline span{font-size:10px;color:#c8d6df}.result-actions{display:flex;justify-content:center;gap:9px;margin-top:14px;}
+.result-actions button{min-width:140px;}
+@media(max-width:900px){.home-shell{grid-template-columns:1fr;min-height:calc(100dvh - 130px);}.home-art{display:none;}.home-copy{max-width:700px;margin:auto;width:100%;}.home-copy h2{font-size:clamp(32px,7vw,50px);}}
+@media(max-width:620px){#app{width:100%;padding:10px;}.home-shell{min-height:calc(100dvh - 125px);padding:20px 16px;border-radius:18px;}.home-shortcuts{grid-template-columns:1fr;}.home-shortcuts button{display:grid;grid-template-columns:28px 1fr;align-items:center;}.home-shortcuts button small{grid-column:2;}.home-start-row{gap:7px;}.home-kickoff{flex:1;}.nav{grid-template-columns:repeat(4,1fr)!important;}.nav button{font-size:11px!important;}}
+@media(max-height:800px){.home-shell{min-height:calc(100dvh - 165px);}}
+@media(max-height:620px){.home-shell{min-height:calc(100dvh - 120px);padding:16px 24px;}.home-art{height:300px;min-height:0;}.home-copy h2{font-size:34px;margin:5px 0 8px;}.home-copy>p{margin-bottom:12px;font-size:11px;}.home-start-row{margin-bottom:12px;}.home-shortcuts button{padding:8px;}}
+@media(max-width:700px){body.immersive-match .pitch-head{left:10px;transform:none;width:auto;min-width:118px;justify-content:center;}body.immersive-match .match-actions{top:auto;bottom:10px;right:10px;}body.immersive-match .pitch-foot{bottom:64px;left:10px;}body.immersive-match .result-stats{grid-template-columns:repeat(2,1fr);}}
+
+
+/* Explicit match stacking: pitch canvas below all readable HUD layers. */
+body.immersive-match .pitch-card{isolation:isolate;}
+body.immersive-match .canvas-wrap{z-index:1;}
+body.immersive-match canvas{z-index:2;}
+body.immersive-match .pitch-head,body.immersive-match .match-actions,body.immersive-match .pitch-foot{z-index:20;}
+body.immersive-match .result-panel{z-index:30;}body.immersive-match .pause-overlay{z-index:28;}
+body.immersive-match .toast{z-index:50;}
+
+/* Release polish: hierarchy, accessibility, touch, and responsive layouts */
+:root{color-scheme:dark;--panel-glass:rgba(12,27,41,.84);--focus:#8bdcf0}
+html{scroll-behavior:smooth}body{font-feature-settings:"ss01" on,"cv11" on;letter-spacing:.005em}
+button,select,input{outline:none}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button{box-shadow:0 5px 14px #0002}button:active{transform:translateY(0) scale(.985)}
+.topbar{min-height:64px}.brand h1{font-weight:950;letter-spacing:2.2px}.logo{position:relative;isolation:isolate}.logo:after{content:"";position:absolute;inset:-4px;border:1px solid #f8dc8266;border-radius:17px;z-index:-1}
+.wallet-item{background:linear-gradient(145deg,#172c3e,#0d1b29);box-shadow:inset 0 1px #ffffff0a}.install-app{padding:9px 13px;font-size:11px;background:#203d50;border-color:#52758e}
+.nav{box-shadow:0 9px 25px #0002}.nav button{font-size:12px;font-weight:850;letter-spacing:.2px}.nav button.active{background:linear-gradient(135deg,#2c4b61,#1a3448);box-shadow:inset 0 0 0 1px #62829a,0 5px 14px #0003}
+.home-shell{position:relative;min-height:clamp(540px,calc(100dvh - 166px),700px);border-color:#36536a;background:radial-gradient(ellipse at 83% 44%,#28506a 0%,#183448 33%,#0e2030 68%,#0a1724 100%)}
+.home-shell:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.15;background:repeating-linear-gradient(135deg,transparent 0 38px,#a4d9ee 39px,transparent 40px 78px);mask-image:linear-gradient(90deg,transparent,#000 80%)}
+.home-copy{z-index:3}.home-copy h2{font-weight:1000;text-wrap:balance}.home-copy>p{color:#c0d0dc}.home-start-row{padding:12px;border:1px solid #65839a55;border-radius:15px;background:#0717258c;backdrop-filter:blur(8px);box-shadow:0 12px 28px #0002}
+.home-start-row select{min-width:78px;padding:11px 12px;border-color:#547087;background:#10283a;font-size:12px;font-weight:800}.home-start-row label{font-size:10px;white-space:nowrap}.home-kickoff{min-height:44px;font-weight:950;letter-spacing:.2px}
+.home-shortcuts button{min-height:103px;background:linear-gradient(150deg,#142b3eeb,#0a1826eb);box-shadow:0 8px 22px #0002;transition:transform .18s,border-color .18s,background .18s}.home-shortcuts button:hover{transform:translateY(-3px);border-color:#83b6d3;background:linear-gradient(150deg,#1a3a52,#102537)}.home-shortcuts button b{font-size:12px}.home-shortcuts button small{font-size:10px}
+.home-utility-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:13px}.save-indicator{display:inline-flex;align-items:center;gap:7px;color:#a9bfce;font-size:10px}.save-indicator i{width:7px;height:7px;border-radius:50%;background:#68d99d;box-shadow:0 0 10px #68d99d88}.save-indicator i.warn{background:#ffbf69;box-shadow:0 0 10px #ffbf6988}.utility-btn{font-size:10px;padding:7px 9px;background:#0c1c2a;border-color:#39546a;color:#bdd0dd}
+.home-art{min-height:320px}.art-ball{filter:drop-shadow(0 26px 25px #000b);text-shadow:0 0 40px #79c9e944}.art-stat{border-color:#7196ac;background:#071624e8;box-shadow:0 15px 35px #0006}.stat-three{left:3%;bottom:18%;transform:translateY(50%)}.stat-three b{font-size:24px}
+.pitch-card,.side-card,.club-panel,.collection-panel,.lab-panel,.brain-team{border-color:#345066;box-shadow:0 15px 38px #0004,inset 0 1px #ffffff08}.section-head h2{letter-spacing:-.4px}.section-head p{max-width:720px;line-height:1.6}.player-card{transition:transform .18s,filter .18s;isolation:isolate}.player-card:hover{transform:translateY(-4px);filter:brightness(1.08)}.player-card:focus-within{outline:2px solid var(--gold);outline-offset:3px}.rarity{backdrop-filter:blur(4px)}.card-grid{grid-template-columns:repeat(auto-fill,minmax(165px,1fr))}.collection-panel h3,.lab-panel h3{letter-spacing:-.2px}
+.pack-hero{box-shadow:0 20px 50px #0004}.pack-open{min-width:min(320px,100%);min-height:48px;font-size:14px}.odds{font-variant-numeric:tabular-nums}
+.brain-card{background:linear-gradient(145deg,#102233,#0b1926)}.brain-badge{box-shadow:inset 0 1px #fff2}.prob-bar i{transition:width .25s ease}.log-item{background:linear-gradient(100deg,#102131,#0b1925)}
+.match-actions button{min-height:38px}.match-state{font-variant-numeric:tabular-nums}.result-head strong{font-weight:950}.result-stat{background:linear-gradient(145deg,#112638,#0b1925)}
+.pause-overlay{display:none;position:absolute;z-index:29;inset:0;place-items:center;background:#04111dbb;backdrop-filter:blur(7px)}.pause-overlay.show{display:grid}.pause-box{width:min(420px,calc(100vw - 36px));padding:26px;border:1px solid #7896a8;border-radius:20px;text-align:center;background:linear-gradient(145deg,#173149,#091827);box-shadow:0 25px 90px #000b}.pause-box h2{margin:3px 0 8px;font-size:26px}.pause-box p{margin:0 0 18px;color:#b5c7d5;font-size:12px}.pause-box>div:last-child{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.pause-box button{min-width:130px}
+.touch-controls{display:none}.touch-dpad,.touch-actions{display:flex;flex-direction:column;gap:6px}.touch-dpad>div{display:flex;gap:6px}.touch-controls button{width:44px;height:42px;padding:0;background:#071725d9;border-color:#ffffff55;touch-action:none;user-select:none;-webkit-user-select:none}.touch-actions{flex-direction:row;align-items:flex-end}.touch-actions button{width:62px;height:48px;font-size:11px}.touch-actions .touch-shoot{background:linear-gradient(145deg,#f6d975,#d79d32);color:#172330;border-color:#ffe6a0}
+@media(max-width:900px){.home-shell{min-height:calc(100dvh - 140px)}.home-art{display:none}.home-copy{max-width:700px;margin:auto;width:100%}.home-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}.home-shortcuts button{display:flex;min-height:92px}.home-shortcuts button small{white-space:normal}}
+@media(max-width:700px){.home-shell{padding:19px 14px;min-height:calc(100dvh - 125px)}.home-start-row{gap:7px}.home-start-row select{flex:1;min-width:0}.home-kickoff{flex-basis:100%}.home-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}.home-shortcuts button{padding:9px 6px;align-items:center;text-align:center}.home-shortcuts button b{white-space:normal}.home-shortcuts button small{font-size:8px}.home-utility-row{justify-content:center}.save-indicator{width:100%;justify-content:center}.touch-controls{display:flex;position:absolute;z-index:24;left:14px;right:14px;bottom:14px;align-items:flex-end;justify-content:space-between;pointer-events:none}.touch-controls>*{pointer-events:auto}.pitch-foot{bottom:76px!important}}
+@media(pointer:coarse) and (max-width:1100px){.touch-controls{display:flex}}
+@media(max-width:460px){.brand small{font-size:8px}.wallet-item{padding:7px 8px;font-size:10px}.install-app{font-size:10px;padding:7px 8px}.home-copy h2{font-size:34px}.home-shortcuts{gap:6px}.home-shortcuts button span{font-size:17px}.utility-btn{font-size:9px}}
+@media(max-height:720px) and (min-width:901px){.home-shell{min-height:calc(100dvh - 165px);padding:20px 26px}.home-art{height:48vh;min-height:250px}.art-ball{font-size:150px}.home-copy h2{font-size:42px;margin:4px 0 9px}.home-copy>p{margin-bottom:13px;font-size:12px}.home-start-row{margin-bottom:12px}.home-shortcuts button{min-height:82px;padding:9px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media(pointer:coarse){body.immersive-match .touch-controls{display:flex;position:absolute;z-index:24;left:14px;right:14px;bottom:14px;align-items:flex-end;justify-content:space-between;pointer-events:none}.touch-controls>*{pointer-events:auto}body.immersive-match .pitch-foot{bottom:76px!important}}
+body.immersive-match .canvas-wrap,body.immersive-match .pitch-card{background:#145a32}
+body.immersive-match .pitch-head .fixture#clock{color:var(--gold);font-variant-numeric:tabular-nums;font-weight:950}
+
+
+@media(max-width:700px){
+ body.immersive-match .pitch-head{left:50%;transform:translateX(-50%);top:max(8px,env(safe-area-inset-top));width:min(158px,calc(100vw - 224px));min-width:145px;padding:6px 9px;gap:7px;}
+ body.immersive-match .scoreline{font-size:17px;letter-spacing:0}
+ body.immersive-match .scoreline span{padding:0 4px}
+ body.immersive-match .pitch-head .fixture{font-size:14px}
+ body.immersive-match .match-actions{top:max(8px,env(safe-area-inset-top));bottom:auto;right:7px;gap:4px}
+ body.immersive-match .match-actions button{padding:7px 8px;font-size:9px}
+ body.immersive-match .pitch-foot{display:none!important}
+ body.immersive-match .toast{top:56px;bottom:auto;left:50%;max-width:calc(100vw - 28px);white-space:nowrap}
+}
+
+
+/* v1.1.0 final systems */
+.nav{flex-wrap:wrap}.nav button{white-space:nowrap}
+@media(max-width:620px){.nav{grid-template-columns:repeat(5,1fr)!important}.nav button{font-size:10px!important;padding:8px 3px}}
+.home-shortcuts{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:900px){.home-shortcuts{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:700px){.home-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}.home-shortcuts button{min-height:84px}}
+.tactic-select-wrap{margin-top:14px;padding:12px;border:1px solid #345168;border-radius:12px;background:linear-gradient(120deg,#0d1e2d,#142a3d);display:grid;grid-template-columns:150px minmax(180px,230px);gap:8px 12px;align-items:center}
+.tactic-select-wrap label{font-size:11px;font-weight:900;color:var(--gold)}.tactic-select-wrap select{width:100%;background:#0a1825;color:#fff;border:1px solid #48647a;border-radius:8px;padding:8px}.tactic-select-wrap p{grid-column:1/-1;margin:0;color:var(--muted);font-size:11px}
+.card-portrait{width:84px;height:88px;margin:0 auto 6px;filter:drop-shadow(0 7px 7px #0005);display:block}.card-honors{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin:5px 0 1px}.card-honors span{padding:3px 6px;border-radius:20px;background:#07152270;border:1px solid #ffffff35;font-size:8px;font-weight:850;letter-spacing:.2px}.card-honors .trait{color:#ffe8a6;border-color:#ffe2a866}.player-card.legend .card-portrait{filter:drop-shadow(0 0 9px #ffdf86a0)}
+.card-actions{flex-wrap:wrap}.card-actions button{flex:1 1 42%;min-height:28px}.card-actions button[data-rankup]{color:#ffe4a0}.player-card .ovr{display:flex;align-items:center;gap:5px}.player-card .ovr small{font-size:9px;opacity:.8}
+.league-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:13px;margin-bottom:14px}.league-feature,.league-table-panel{border:1px solid var(--line);border-radius:16px;padding:17px;background:linear-gradient(145deg,#14283a,#0c1a27);box-shadow:0 14px 38px #0003}.league-feature{min-height:156px;position:relative;overflow:hidden}.league-feature:after{content:'🏆';position:absolute;right:18px;bottom:-17px;font-size:96px;opacity:.08;pointer-events:none}.league-feature h3{font-size:21px;margin:4px 0 7px}.league-feature p{font-size:11px;color:var(--muted);line-height:1.6;max-width:500px}.league-feature-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}.league-chip{display:inline-flex;align-items:center;padding:6px 9px;border:1px solid #dcb84b66;border-radius:8px;background:#e0b84212;color:#f4d67d;font-size:10px;font-weight:900;letter-spacing:.5px}.league-table-panel{margin-bottom:14px}.league-table-scroll{overflow:auto}.league-table{width:100%;border-collapse:collapse;font-size:12px;min-width:540px}.league-table th,.league-table td{padding:10px 9px;border-bottom:1px solid #293e50;text-align:center;font-variant-numeric:tabular-nums}.league-table th{font-size:9px;color:var(--muted);letter-spacing:.8px;font-weight:900}.league-table td:nth-child(2),.league-table th:nth-child(2){text-align:left}.league-table tr.user-team{background:#1c3850}.league-table tr.user-team td:nth-child(2){color:#a5dcff;font-weight:950}.league-table .rank-number{color:var(--gold);font-weight:950}.league-recent{display:grid;gap:7px}.league-result{display:grid;grid-template-columns:86px 1fr auto;gap:10px;align-items:center;padding:10px;border-radius:10px;background:#0d1b29;border:1px solid #263c4f;font-size:11px}.league-result small{display:block;color:var(--muted);margin-top:3px}.league-result b{font-size:12px}.league-result .league-score{font-size:16px;font-weight:950;color:var(--gold);font-variant-numeric:tabular-nums}.empty-league{padding:22px;text-align:center;border:1px dashed #3a5368;border-radius:12px;color:var(--muted);font-size:12px}
+.mvp-strip{display:grid;grid-template-columns:70px 1fr auto;gap:12px;align-items:center;margin:14px 0;padding:13px;border-radius:14px;border:1px solid #e1c36b88;background:linear-gradient(110deg,#4a3a20,#1b2c3b 75%)}.mvp-icon{width:62px;height:70px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(145deg,#f8dc82,#9c6d2a);color:#1b2630;font-size:30px}.mvp-strip h3{margin:0 0 4px;font-size:15px}.mvp-strip p{margin:0;color:#d8cba8;font-size:10px;line-height:1.5}.mvp-rating{font-size:27px;color:#ffe08a;font-weight:950}.rating-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin:10px 0 14px}.rating-row{display:grid;grid-template-columns:26px 1fr auto;gap:8px;align-items:center;padding:7px 9px;border-radius:8px;background:#0b1b29;border:1px solid #263d50;font-size:10px}.rating-row .rating-num{font-weight:900;color:var(--muted)}.rating-row b{font-size:11px}.rating-row strong{color:#f6d578;font-size:12px}.rating-row.user-rating{border-color:#d7b85877}.result-kicker{margin:12px 0 5px;color:var(--muted);font-size:9px;letter-spacing:1px;font-weight:900}
+@media(max-width:760px){.league-hero{grid-template-columns:1fr}.tactic-select-wrap{grid-template-columns:1fr}.tactic-select-wrap p{grid-column:1}.rating-list{grid-template-columns:1fr}.league-result{grid-template-columns:70px 1fr auto}.mvp-strip{grid-template-columns:54px 1fr auto}.mvp-icon{width:50px;height:58px}}
+
+
+/* AI 3.0 research telemetry */
+.ai3-telemetry{margin-top:14px;padding:14px;border:1px solid #36566b;border-radius:13px;background:linear-gradient(140deg,#132c3c,#0b1b29);box-shadow:inset 0 1px #ffffff0a}
+.ai3-telemetry-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.ai3-telemetry-head strong{font-size:11px;letter-spacing:1.3px;color:#a9e9f2}
+.ai3-speed-pill{padding:5px 9px;border-radius:30px;background:#174d3a;color:#9af0bb;font-size:10px;font-weight:900;letter-spacing:.7px}
+.ai3-progress{height:8px;background:#263c4d;border-radius:99px;overflow:hidden;border:1px solid #ffffff0c}
+.ai3-progress i{display:block;width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#42b8db,#7de5a5);transition:width .12s linear}
+.ai3-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:11px}
+.ai3-metric{padding:8px;background:#081824a8;border:1px solid #294357;border-radius:9px;min-width:0}
+.ai3-metric b{display:block;font-size:15px;color:#f4d982;font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai3-metric small{display:block;color:var(--muted);font-size:9px;margin-top:3px;line-height:1.3}
+.ai3-scenario{font-size:10px;color:#a8c4d6;margin-top:9px;line-height:1.5}
+@media(max-width:620px){.ai3-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+</style>
+</head>
+<body>
+<div id="app">
+ <header class="topbar">
+  <div class="brand"><div class="logo">⚽</div><div><h1>PITCH 11</h1><small>AI FOOTBALL CLUB · SEASON MODE <span class="version-tag">v2.0.0 FINAL</span></small></div></div>
+  <div class="wallet"><div class="wallet-item">🪙 코인 <b id="coins">900</b></div><div class="wallet-item">선수 카드 <b id="cardCount">5</b></div><button class="install-app" id="installApp" hidden>앱 설치</button></div>
+ </header>
+ <nav class="nav"><button class="active" data-view="home">메인 메뉴</button><button data-view="club">스쿼드 관리</button><button data-view="packs">선수 영입</button><button data-view="lab">AI 연구소</button><button data-view="league">리그</button></nav>
+ <main>
+  <section class="view active" id="home">
+   <div class="home-shell">
+    <div class="home-copy">
+     <div class="eyebrow">PITCH 11 · CLUB HUB</div>
+     <h2>나만의 AI 클럽,<br><em>킥오프를 준비해.</em></h2>
+     <p>선수를 영입하고 스쿼드를 구성한 뒤, 제한 시간 안에 승리를 가져와. 경기 중에는 경기장만 화면 가득 펼쳐져.</p>
+     <div class="home-start-row">
+      <label for="matchDuration">경기 시간</label>
+      <select id="matchDuration"><option value="60">1분</option><option value="180" selected>3분</option><option value="300">5분</option></select>
+      <label for="matchCompetition">경기 모드</label><select id="matchCompetition"><option value="friendly" selected>친선 경기</option><option value="league">시즌 리그</option></select>
+      <label for="difficulty">상대 난이도</label>
+      <select id="difficulty"><option value="easy">쉬움</option><option value="normal" selected>보통</option><option value="hard">어려움</option></select>
+      <button class="primary home-kickoff" id="homeStartMatch">⚽ 경기 시작</button>
+     </div>
+     <div class="home-shortcuts">
+      <button data-home-view="club"><span>👥</span><b>스쿼드 관리</b><small>선수 배치 · 전술 설정</small></button>
+      <button data-home-view="packs"><span>🃏</span><b>선수 영입</b><small>AI 선수 카드 뽑기</small></button>
+      <button data-home-view="lab"><span>🧠</span><b>AI 연구소</b><small>학습 기록 · 행동 확률</small></button>
+      <button data-home-view="league"><span>🏆</span><b>리그 & 시즌</b><small>순위 · 일정 · 우승 기록</small></button>
+     </div>
+     <div class="home-utility-row"><span class="save-indicator"><i id="saveDot"></i><span id="saveStatus">이 기기에 자동 저장</span></span><div><button class="utility-btn" id="exportSave">데이터 백업</button><button class="utility-btn" id="importSave">백업 불러오기</button><input id="importSaveFile" type="file" accept="application/json,.json" hidden></div></div>
+    </div>
+    <div class="home-art" aria-hidden="true">
+     <div class="art-glow"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+     <div class="art-ball">⚽</div><div class="art-label label-top">BUILT TO PLAY</div><div class="art-label label-bottom">PITCH UNITED · 11</div>
+     <div class="art-stat stat-one"><small>CLUB RATING</small><b id="homeOvr">80</b></div>
+     <div class="art-stat stat-two"><small>AI SQUAD</small><b>05</b></div>
+     <div class="art-stat stat-three"><small>WIN RATE</small><b id="homeWinRate">0%</b></div>
+    </div>
+   </div>
+  </section>
+  <section class="view" id="match">
+   <div class="section-head"><div><div class="eyebrow">LIVE MATCH CENTER</div><h2>친선 경기</h2><p>정해진 경기 시간 동안 득점 경쟁을 해. 시간이 끝나면 점수로 승패가 결정돼.</p></div><div class="stat" id="matchMode">모드 · 직접 플레이</div></div>
+   <div class="match-grid">
+    <div class="pitch-card">
+     <div class="pitch-head"><div><div class="live-mark" id="liveMark">● MATCH READY</div><div class="fixture">PITCH UNITED <span style="color:#7abfff">🔵</span> <span style="color:#aab8c5">vs</span> 🔴 CPU SELECT</div></div><div class="scoreline" id="scoreline">0 <span>:</span> 0</div><div class="fixture" id="clock">03:00</div></div>
+     <div class="canvas-wrap"><canvas id="game" width="1100" height="690" aria-label="PITCH 11 축구 경기장. WASD로 이동하고 Space로 슈팅, E로 패스합니다." role="img"></canvas></div>
+     <div class="pitch-foot"><span>조작 <b>WASD</b> 이동 · <b>SPACE</b> 슛 · <b>E</b> 패스 · <b>Q</b> 선수 변경</span><span id="ballStatus">공 소유 · 없음</span></div>
+     <div class="match-actions"><span class="match-state" id="matchState">경기 준비 중</span><button class="primary" id="pauseMatch" disabled>일시정지</button><button id="exitToMenu">메뉴</button><button id="startMatch" hidden>경기 시작</button></div>
+     <div class="pause-overlay" id="pauseOverlay" role="dialog" aria-modal="true" aria-labelledby="pauseTitle"><div class="pause-box"><div class="eyebrow">MATCH PAUSED</div><h2 id="pauseTitle">잠시 쉬어가기</h2><p>경기 시간은 멈춰 있어. 준비되면 다시 시작해.</p><div><button class="primary" id="resumeMatch">경기 계속하기</button><button id="pauseMenu">메뉴로 나가기</button></div></div></div>
+     <div class="touch-controls" id="touchControls" aria-label="터치 조작">
+      <div class="touch-dpad"><button data-move="w" aria-label="위로 이동">▲</button><div><button data-move="a" aria-label="왼쪽 이동">◀</button><button data-move="s" aria-label="아래로 이동">▼</button><button data-move="d" aria-label="오른쪽 이동">▶</button></div></div>
+      <div class="touch-actions"><button data-action="pass">패스</button><button data-action="shoot" class="touch-shoot">슛</button></div>
+     </div>
+     <div class="result-panel" id="resultPanel"></div>
+    </div>
+    <aside class="side-stack">
+     <div class="side-card"><div class="side-title">CONTROLLED PLAYER</div><div class="selected-card"><div class="avatar" id="selectedAvatar">10</div><div><h3 id="selectedName">플레이어</h3><p id="selectedRole">FWD · 직접 조종</p></div></div><div class="stat-bars" id="selectedStats"></div><div class="match-controls"><button class="primary" id="playMode">직접 조종 모드</button><button id="openLab">AI 연구소 보기</button></div><div class="hint">실전 경기에서는 네가 한 명을 조종하고 나머지 선수는 AI가 움직여. AI 전체 훈련과 학습 기록은 별도 연구소에서 확인할 수 있어.</div></div>
+     <div class="side-card"><div class="side-title">STARTING LINEUP · BLUE</div><div class="team-mini" id="miniLineup"></div><div class="match-controls"><button id="switchPlayer">선수 변경 Q</button><button id="resetMatch">경기 다시 시작</button></div></div>
+     <div class="side-card"><div class="side-title">MATCH STATISTICS</div><div class="stat-bars" id="matchQuickStats"><div class="stat-row"><span>파란 팀 슈팅 <b id="blueShots">0</b></span></div><div class="stat-row"><span>빨간 팀 슈팅 <b id="redShots">0</b></span></div><div class="stat-row"><span>파란 팀 패스 <b id="bluePasses">0</b></span></div><div class="stat-row"><span>빨간 팀 패스 <b id="redPasses">0</b></span></div></div><div class="hint">경기는 선택한 시간에만 진행돼. 시간이 끝나면 자동으로 종료되고 최종 점수와 경기 기록이 표시돼.</div></div>
+    </aside>
+   </div>
+  </section>
+  <section class="view" id="club">
+   <div class="section-head"><div><div class="eyebrow">CLUB MANAGEMENT</div><h2>나만의 AI 팀 만들기</h2><p>선수 카드를 선발 슬롯에 배치해. 카드의 속도·슈팅·패스·수비·피지컬이 경기 중 AI 판단에 반영돼.</p></div><button class="primary" id="bestLineup">베스트 5 자동 편성</button></div>
+   <div class="club-hero">
+    <div class="club-panel"><div class="club-name"><div class="club-crest">⚽</div><div><h2>PITCH UNITED</h2><p>6인 팀 · 직접 조종 1명 + AI 선수 5명</p></div><div class="overall"><strong id="clubOvr">--</strong><small>TEAM OVR</small></div></div>
+     <div class="formation">
+      <div class="lineup-row" id="lineupTop"></div><div class="lineup-row" id="lineupMid"></div><div class="lineup-row" id="lineupBack"></div>
+     </div><div class="lineup-actions"><button id="goMatch" class="primary">이 팀으로 경기하기</button><button id="saveSquad" class="secondary">선수단 저장</button></div>
+    </div>
+    <div class="club-panel"><div class="side-title">SQUAD TACTICS</div><h3 style="margin:0 0 8px">5 AI 카드 + 캡틴 · 미니 피치 전술</h3><p style="font-size:12px;color:var(--muted);line-height:1.7;margin:0">경기 인원은 기존 요청대로 총 11명으로 유지해. 파란 팀 6명(너 1명 + AI 5명), 빨간 팀 5명으로 구성돼. AI 선수들은 공 소유·압박 순서·패스 경로·포지션에 따라 역할을 나눠 움직여. 공을 가진 선수는 슈팅·패스·드리블을 판단하고, 나머지는 침투·지원·커버로 공간을 만들어.</p><div class="tactic-select-wrap"><label for="tacticsPreset">AI 전술 프리셋</label><select id="tacticsPreset"><option value="balanced">밸런스</option><option value="highpress">전방 압박</option><option value="possession">점유율 축구</option><option value="counter">역습</option><option value="lowblock">수비 집중</option></select><p id="tacticsDescription">공수 균형을 유지하며 상황에 맞춰 움직여.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:15px"><div class="stat">🔵 선발 AI <b id="blueCount">5</b></div><div class="stat">🧠 카드 학습 <b id="brainCount">5</b></div><div class="stat">🏟️ 경기 인원 <b>11</b></div></div></div>
+   </div>
+   <div class="collection-panel"><div class="collection-top"><div><h3>내 선수 카드</h3><p>선발 슬롯을 먼저 선택하고, 카드의 '선발 배치'를 눌러 편성해.</p></div><div class="filter-row" id="filters"><button class="active" data-filter="ALL">전체</button><button data-filter="GK">GK</button><button data-filter="DEF">DEF</button><button data-filter="MID">MID</button><button data-filter="FWD">FWD</button></div></div><div class="card-grid" id="collection"></div></div>
+  </section>
+  <section class="view" id="packs">
+   <div class="section-head"><div><div class="eyebrow">PLAYER SIGNING</div><h2>AI 선수 영입</h2><p>팩을 열어 새로운 선수를 영입하고, 더 강한 AI 팀을 구성해.</p></div><div class="stat">보유 코인 · <b id="packCoins">900</b></div></div>
+   <div class="pack-hero"><div class="pack-art"><span>⚽</span></div><div class="eyebrow">ELITE SCOUT PACK</div><h2>엘리트 스카우트 팩</h2><p>랜덤 선수 카드 1장을 획득해. 희귀도가 높을수록 기본 능력치와 잠재력이 좋아져. 획득한 선수는 선수단에 배치할 수 있어.</p><div class="pack-odds"><span class="odds">NORMAL 60%</span><span class="odds" style="color:#75cfff">RARE 26%</span><span class="odds" style="color:#c8a2ff">EPIC 11%</span><span class="odds" style="color:#ffdd8c">LEGEND 3%</span></div><button class="primary pack-open" id="openPack">팩 열기 · 300 🪙</button><div class="pack-note">경기 득점 보상으로 코인을 모을 수 있어. 카드와 코인은 이 브라우저에 자동 저장돼.</div></div>
+   <div class="collection-panel" style="margin-top:14px"><div class="collection-top"><div><h3>최근 영입 선수</h3><p>가장 최근에 획득한 카드 4장</p></div><button id="toClub">스쿼드 관리</button></div><div class="card-grid" id="recentCards"></div></div>
+  </section>
+
+  <section class="view" id="lab">
+   <div class="section-head"><div><div class="eyebrow">PITCH 11 · AI PERFORMANCE CENTER</div><h2>AI 연구소</h2><p>경기 화면과 분리된 곳에서 선수별 행동 확률, 학습량, 득점·실점 보정, 훈련 기록을 확인해.</p></div><div class="stat" id="labStatus">상태 · 대기 중</div></div>
+   <div class="lab-hero">
+    <div class="lab-panel"><div class="side-title">AI TRAINING SESSION</div><h3 style="margin:0 0 6px">전원 AI 훈련 경기</h3><p style="margin:0;color:var(--muted);font-size:12px;line-height:1.7">훈련을 시작하면 11명 모두 AI로 자체 대전을 진행해. 화면 그리기 없이 6배 가속 시뮬레이션을 수행하므로 가상 3분 훈련을 약 30초에 처리하는 것이 목표야. 팀 신경망, 중앙 팀 크리틱, 선수별 Q값, 우선순위 경험 재생, 상대 전술 분석을 함께 학습하고 결과를 브라우저에 저장해.</p>
+     <div class="hint" style="margin-top:10px;line-height:1.75"><b>실전 판단 로직</b><br>공을 가진 선수는 슈팅 각도·거리·압박·패스 경로를 비교해 선택해. 공격 시 동료는 서로 다른 폭과 깊이를 유지하며 지원·침투하고, 수비 시 가장 가까운 선수 한 명이 압박하고 두 번째 선수는 패스 길을 차단해. 나머지는 포지션을 지켜.</div>
+    <div class="training-controls"><label for="trainingDuration" style="font-size:11px;color:var(--muted);font-weight:800">훈련 시간</label><select id="trainingDuration"><option value="60">1분</option><option value="180" selected>3분</option><option value="300">5분</option></select><button class="primary" id="startTraining">AI 훈련 시작</button><button id="resumeTraining" hidden>훈련 계속하기</button><button id="stopTraining" disabled>훈련 종료</button></div>
+     <div class="training-status" id="trainingStatus">훈련 대기 중 · 1분, 3분, 5분 훈련을 선택할 수 있어.</div>
+     <div class="ai3-telemetry" aria-live="polite">
+      <div class="ai3-telemetry-head"><strong>AI 3.0 · TEAM INTELLIGENCE ENGINE</strong><span class="ai3-speed-pill" id="ai3SpeedLabel">6× 고속 학습 준비 완료</span></div>
+      <div class="ai3-progress"><i id="ai3ProgressFill"></i></div>
+      <div class="ai3-grid">
+       <div class="ai3-metric"><b id="ai3SimTime">가상 00:00 / 03:00</b><small>가상 경기 진행</small></div>
+       <div class="ai3-metric"><b id="ai3NetworkCount">0</b><small>팀 신경망 업데이트</small></div>
+       <div class="ai3-metric"><b id="ai3ReplayCount">0</b><small>우선순위 경험 재생</small></div>
+       <div class="ai3-metric"><b id="ai3CriticCount">0</b><small>팀 크리틱 업데이트</small></div>
+       <div class="ai3-metric"><b id="ai3OpponentCount">0</b><small>상대 분석 관찰</small></div>
+      </div>
+      <div class="ai3-scenario" id="ai3Scenario">AI 자체 대전 · 압박, 역습, 수비 블록, 점유율 전술을 순환 학습해.</div>
+     </div>
+     <div class="lab-kpis"><div class="lab-kpi"><strong id="labUpdates">0</strong><small>LEARNING UPDATES</small></div><div class="lab-kpi"><strong id="labGoalsFor">0</strong><small>GOALS FOR</small></div><div class="lab-kpi"><strong id="labGoalsAgainst">0</strong><small>GOALS AGAINST</small></div></div>
+    </div>
+    <div class="lab-panel"><div class="side-title">LEARNING RULES</div><h3 style="margin:0 0 8px">결과 기반 행동 확률 업데이트</h3><div class="hint" style="margin:0">선수별 정책과 공유 팀 신경망이 함께 학습해. 팀 크리틱은 경기장 전체 상황과 팀 결과를 평가하고, 좋은 패스·지원·압박·커버·득점 기여를 팀 동료에게도 나눠 보상해. TD 오차가 큰 경험은 우선순위 재생 버퍼에서 더 자주 복습하며, 자체 대전에서 상대 전술을 바꿔 가며 약점을 학습해.</div>
+     <div class="lab-kpis"><div class="lab-kpi"><strong id="labBoosts">0</strong><small>POSITIVE REINFORCEMENTS</small></div><div class="lab-kpi"><strong id="labPenalties">0</strong><small>NEGATIVE REINFORCEMENTS</small></div><div class="lab-kpi"><strong id="labAgents">10</strong><small>AI AGENTS</small></div></div>
+    </div>
+   </div>
+   <div class="brain-teams">
+    <div class="brain-team"><h3><span style="color:#5cbaff">●</span> PITCH UNITED · BLUE AI</h3><div class="brain-list" id="blueBrains"></div></div>
+    <div class="brain-team"><h3><span style="color:#ff7c84">●</span> CPU SELECT · RED AI</h3><div class="brain-list" id="redBrains"></div></div>
+   </div>
+   <div class="lab-panel lab-section"><div class="collection-top"><div><h3>학습 이벤트 로그</h3><p>득점·실점·훈련 종료 때 어떤 팀의 어떤 학습이 반영됐는지 기록해.</p></div><button id="refreshLab">새로고침</button></div><div class="log-list" id="learningLog"><div class="empty-log">아직 학습 기록이 없어. AI 훈련을 시작하거나 경기를 진행해 봐.</div></div></div>
+  </section>
+
+
+  <section class="view" id="league">
+   <div class="section-head"><div><div class="eyebrow">PITCH 11 · SEASON LEAGUE</div><h2>시즌 리그</h2><p>8개 구단이 7라운드 단일 라운드로빈으로 경쟁해. 리그 경기를 완료하면 승점과 순위가 반영돼.</p></div><div class="stat" id="leagueSeasonLabel">SEASON 01 · ROUND 1/7</div></div>
+   <div class="league-hero">
+    <div class="league-feature"><div class="eyebrow">NEXT FIXTURE</div><h3 id="leagueNextOpponent">다음 상대 · NORTH CITY</h3><p id="leagueFixtureInfo">다음 리그 경기를 시작해 순위를 올려 봐.</p><div class="league-feature-bottom"><span class="league-chip" id="leagueClubOvr">CLUB OVR 80</span><button class="primary" id="leaguePlay">다음 리그 경기 시작</button></div></div>
+    <div class="league-feature league-champion"><div class="eyebrow">LAST SEASON CHAMPION</div><h3 id="lastChampion">아직 우승 기록이 없어</h3><p id="lastChampionInfo">첫 시즌을 완주하면 우승 기록과 시즌 보상을 획득할 수 있어.</p></div>
+   </div>
+   <div class="league-table-panel">
+    <div class="collection-top"><div><h3>리그 순위표</h3><p>승리 3점 · 무승부 1점 · 패배 0점. 승점, 득실차, 다득점 순으로 정렬돼.</p></div><span class="league-chip" id="leagueRoundChip">ROUND 1 / 7</span></div>
+    <div class="league-table-scroll"><table class="league-table"><thead><tr><th>#</th><th>구단</th><th>경기</th><th>승</th><th>무</th><th>패</th><th>득실</th><th>승점</th></tr></thead><tbody id="leagueStandings"></tbody></table></div>
+   </div>
+   <div class="league-table-panel"><div class="collection-top"><div><h3>최근 리그 경기</h3><p>최근 완료한 시즌 경기 결과와 MVP를 확인해.</p></div></div><div id="leagueRecent" class="league-recent"></div></div>
+  </section>
+
+ </main>
+</div>
+<div class="overlay" id="revealOverlay"><div class="reveal"><div class="eyebrow">NEW SIGNING</div><h2>새로운 AI 선수 영입!</h2><p>선수단에 추가됐어. 선발 슬롯에 배치해 보자.</p><div id="revealedCard"></div><div class="reveal-actions"><button class="primary" id="useNewCard">스쿼드에 배치</button><button id="closeReveal">계속하기</button></div></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');let W=canvas.width,H=canvas.height,fieldScale=1,fieldOffsetX=0,fieldOffsetY=0;
+const FIELD={l:-900,r:900,t:-560,b:560},GOAL_HALF=92,PR=13,BR=7;
+const SAVE_KEY='pitch11_club_save_v1',BRAIN_KEY='pitch11_card_brains_v1',LOG_KEY='pitch11_learning_logs_v1',HISTORY_KEY='pitch11_match_history_v1',SETTINGS_KEY='pitch11_settings_v1';
+const APP_VERSION='2.0.0';
+const SLOT_ROLES=['GK','DEF','DEF','MID','FWD'];
+const FORM_BLUE=[{role:'GK',x:-790,y:0},{role:'DEF',x:-570,y:-230},{role:'DEF',x:-570,y:220},{role:'MID',x:-270,y:-150},{role:'FWD',x:55,y:-120},{role:'FWD',x:55,y:120}];
+const FORM_RED=[{role:'GK',x:790,y:0},{role:'DEF',x:570,y:0},{role:'MID',x:300,y:-210},{role:'MID',x:300,y:210},{role:'FWD',x:30,y:0}];
+const ACTIONS=['press','support','hold','cover','run'];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),hypot=(x,y)=>Math.hypot(x,y),norm=(x,y)=>{const n=hypot(x,y)||1;return{x:x/n,y:y/n}};
+const $=id=>document.getElementById(id);
+let clubData={},cards=[],lineup=[],coins=900,brains={},learningLogs=[];
+try{clubData=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')||{}}catch(e){clubData={}}
+try{brains=JSON.parse(localStorage.getItem(BRAIN_KEY)||'{}')||{}}catch(e){brains={}}
+try{learningLogs=JSON.parse(localStorage.getItem(LOG_KEY)||'[]')||[]}catch(e){learningLogs=[]}
+let matchHistory=[];try{matchHistory=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]')||[]}catch(e){matchHistory=[]}
+let settings={difficulty:'normal'};try{settings={...settings,...(JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}')||{})}}catch(e){}
+let difficulty=['easy','normal','hard'].includes(settings.difficulty)?settings.difficulty:'normal';
+const names=['강태오','윤시우','박도윤','한준서','이민재','서하준','정우진','김이안','최로운','백지호','오태민','문건우','장현우','신유찬','임재하','조민규'];
+function newId(){return 'c_'+Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-3)}
+function roleName(r){return ({GK:'골키퍼',DEF:'수비수',MID:'미드필더',FWD:'공격수'})[r]||r}
+function defaultCard(role,name,stats,rarity='common') {const avg=Math.round((stats.PAC+stats.SHO+stats.PAS+stats.DEF+stats.PHY)/5);return{id:newId(),name,role,rarity,ovr:avg,...stats,skill:({GK:'반사 신경',DEF:'태클 마스터',MID:'플레이메이커',FWD:'침투 본능'})[role]||'팀 플레이',created:Date.now()}}
+function ensureClub(){
+ if(!Array.isArray(clubData.cards)||clubData.cards.length===0){
+  cards=[
+   defaultCard('GK','태오 강',{PAC:58,SHO:38,PAS:66,DEF:83,PHY:78}),
+   defaultCard('DEF','시우 윤',{PAC:72,SHO:52,PAS:69,DEF:81,PHY:80}),
+   defaultCard('DEF','도윤 박',{PAC:68,SHO:48,PAS:73,DEF:84,PHY:83}),
+   defaultCard('MID','준서 한',{PAC:76,SHO:68,PAS:82,DEF:70,PHY:72}),
+   defaultCard('FWD','민재 이',{PAC:84,SHO:81,PAS:70,DEF:54,PHY:75})
+  ];lineup=cards.map(c=>c.id);coins=900;saveClub();
+ }else{cards=clubData.cards;lineup=Array.isArray(clubData.lineup)?clubData.lineup.slice(0,5):[];coins=Number.isFinite(clubData.coins)?clubData.coins:900;}
+ // repair old or incomplete save data without losing owned cards
+ for(const role of SLOT_ROLES){if(!cards.some(c=>c.role===role)){const c=defaultCard(role,names[Math.floor(Math.random()*names.length)],{PAC:65,SHO:60,PAS:65,DEF:65,PHY:65});cards.push(c);}}
+ while(lineup.length<5){const role=SLOT_ROLES[lineup.length],fallback=cards.find(c=>c.role===role&&!lineup.includes(c.id))||cards.find(c=>!lineup.includes(c.id));if(fallback)lineup.push(fallback.id);else{const c=defaultCard(role,names[Math.floor(Math.random()*names.length)],{PAC:65,SHO:60,PAS:65,DEF:65,PHY:65});cards.push(c);lineup.push(c.id);}}
+ lineup=lineup.slice(0,5);saveClub();
+}
+function setSaveStatus(message,warning=false){const el=$('saveStatus'),dot=$('saveDot');if(el)el.textContent=message;if(dot)dot.classList.toggle('warn',!!warning);}
+function saveClub(){clubData={version:1,cards,lineup,coins,savedAt:Date.now()};try{localStorage.setItem(SAVE_KEY,JSON.stringify(clubData));setSaveStatus('자동 저장 완료 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}));}catch(e){setSaveStatus('저장 공간 확인 필요',true);toast('저장 공간이 부족해. 백업을 내려받아 줘.');}updateWallet();}
+function saveMatchHistory(){try{localStorage.setItem(HISTORY_KEY,JSON.stringify(matchHistory.slice(0,30)));}catch(e){setSaveStatus('저장 공간 확인 필요',true);}}
+function saveSettings(){settings.difficulty=difficulty;try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(settings));}catch(e){}}
+function exportBackup(){const payload={app:'PITCH11',version:APP_VERSION,exportedAt:new Date().toISOString(),club:{cards,lineup,coins},brains,learningLogs,matchHistory,settings:{difficulty}};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`pitch11-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('게임 데이터 백업을 저장했어.');}
+async function importBackup(file){if(!file)return;try{if(file.size>5*1024*1024)throw new Error('백업 파일이 5MB를 넘었어.');const data=JSON.parse(await file.text());if(data.app!=='PITCH11'||!data.club||!Array.isArray(data.club.cards)||!Array.isArray(data.club.lineup))throw new Error('PITCH 11 백업 파일이 아니야.');if(data.club.cards.length<1||data.club.cards.length>500||data.club.lineup.length!==5)throw new Error('선수 데이터 형식이 올바르지 않아.');const seen=new Set(),cleanCards=data.club.cards.filter(c=>c&&typeof c.id==='string'&&c.id.length<100&&typeof c.name==='string'&&c.name.length<60&&['GK','DEF','MID','FWD'].includes(c.role)&&['PAC','SHO','PAS','DEF','PHY'].every(k=>Number.isFinite(Number(c[k])))).filter(c=>{if(seen.has(c.id))return false;seen.add(c.id);return true;}).map(c=>({...c,name:c.name.slice(0,40),skill:String(c.skill||'팀 플레이').slice(0,50),rarity:['common','rare','epic','legend'].includes(c.rarity)?c.rarity:'common',...Object.fromEntries(['PAC','SHO','PAS','DEF','PHY'].map(k=>[k,clamp(Math.round(Number(c[k])),1,99)]))}));if(cleanCards.length<5)throw new Error('유효한 선수 카드가 충분하지 않아.');const validIds=new Set(cleanCards.map(c=>c.id));const cleanLineup=data.club.lineup.slice(0,5);if(cleanLineup.length!==5||new Set(cleanLineup).size!==5||cleanLineup.some(id=>!validIds.has(id)))throw new Error('선발 명단 데이터가 올바르지 않아.');if(!confirm('현재 게임 저장 데이터를 백업 파일 내용으로 교체할까? 기존 데이터는 백업 파일로 남겨두는 것을 권장해.'))return;localStorage.setItem(SAVE_KEY,JSON.stringify({cards:cleanCards,lineup:cleanLineup,coins:clamp(Math.round(Number(data.club.coins)||0),0,9999999)}));localStorage.setItem(BRAIN_KEY,JSON.stringify(data.brains&&typeof data.brains==='object'?data.brains:{}));localStorage.setItem(LOG_KEY,JSON.stringify(Array.isArray(data.learningLogs)?data.learningLogs.slice(0,100):[]));localStorage.setItem(HISTORY_KEY,JSON.stringify(Array.isArray(data.matchHistory)?data.matchHistory.slice(0,30):[]));localStorage.setItem(SETTINGS_KEY,JSON.stringify(data.settings||{difficulty:'normal'}));toast('백업을 불러왔어. 게임을 다시 시작할게.');setTimeout(()=>location.reload(),450);}catch(e){toast(e.message||'백업 파일을 불러오지 못했어.');}finally{$('importSaveFile').value='';}}
+function renderHomeDashboard(){const played=matchHistory.length,wins=matchHistory.filter(m=>m.result==='win').length;$('homeWinRate').textContent=played?Math.round(wins/played*100)+'%':'0%';$('homeOvr').textContent=teamOverall();}
+function freshBrain(){return{q:{},policy:{},updates:0,goalsFor:0,goalsAgainst:0,lastState:null,lastAction:null,lastProbs:null,lastOutcome:0}}
+function normalizeBrain(b){if(!b||typeof b!=='object')return freshBrain();b.q=b.q||{};b.policy=b.policy||{};b.updates=Number(b.updates)||0;b.goalsFor=Number(b.goalsFor)||0;b.goalsAgainst=Number(b.goalsAgainst)||0;b.lastState=b.lastState||null;b.lastAction=Number.isInteger(b.lastAction)?b.lastAction:null;b.lastProbs=Array.isArray(b.lastProbs)?b.lastProbs:null;b.lastOutcome=Number(b.lastOutcome)||0;return b}
+function getCard(id){return cards.find(c=>c.id===id)||cards[0]}
+function randomCard(){
+ const roll=Math.random(),rarity=roll<.60?'common':roll<.86?'rare':roll<.97?'epic':'legend';
+ const ranges={common:[66,75],rare:[75,82],epic:[82,88],legend:[89,95]},[lo,hi]=ranges[rarity];
+ const role=['GK','DEF','DEF','MID','MID','FWD'][Math.floor(Math.random()*6)];
+ const base=Math.floor(lo+Math.random()*(hi-lo+1)),variance=()=>Math.floor(Math.random()*13)-6;
+ let stats={PAC:clamp(base+variance(),40,99),SHO:clamp(base+variance(),35,99),PAS:clamp(base+variance(),40,99),DEF:clamp(base+variance(),35,99),PHY:clamp(base+variance(),40,99)};
+ if(role==='GK'){stats.DEF=clamp(base+8,40,99);stats.PHY=clamp(base+4,40,99);stats.SHO=clamp(base-25,20,70);}
+ if(role==='FWD'){stats.PAC=clamp(base+5,40,99);stats.SHO=clamp(base+8,40,99);stats.DEF=clamp(base-15,25,85);}
+ if(role==='DEF'){stats.DEF=clamp(base+7,40,99);stats.PHY=clamp(base+4,40,99);}
+ if(role==='MID'){stats.PAS=clamp(base+7,40,99);stats.PAC=clamp(base+2,40,99);}
+ const name=names[Math.floor(Math.random()*names.length)];
+ const c=defaultCard(role,name,stats,rarity);c.skill=({GK:['슈퍼 세이브','골문 장악'],DEF:['철벽 수비','인터셉트'],MID:['킬 패스','경기 조율'],FWD:['결정력','스피드 돌파']}[role])[Math.floor(Math.random()*2)];return c;
+}
+function cardOverall(c){return Math.round((c.PAC+c.SHO+c.PAS+c.DEF+c.PHY)/5)}
+function teamOverall(){return Math.round(lineup.reduce((s,id)=>s+cardOverall(getCard(id)),0)/5)}
+function cardHtml(c,opts={}){
+ const equipped=lineup.includes(c.id),isCurrent=opts.isCurrent||false;
+ return `<div class="player-card ${c.rarity||'common'}" data-id="${escapeHtml(c.id)}"><div class="card-top"><div><div class="ovr">${cardOverall(c)}</div><div class="position">${c.role}</div></div><div class="rarity">${({common:'NORMAL',rare:'RARE',epic:'EPIC',legend:'LEGEND'})[c.rarity]||'NORMAL'}</div></div><div class="card-mid"><div class="player-silhouette">${c.role==='GK'?'🧤':c.role==='DEF'?'🛡️':c.role==='MID'?'🎯':'⚡'}</div><strong>${escapeHtml(c.name)}</strong><small>${roleName(c.role)} · ${escapeHtml(c.skill||'팀 플레이')}</small></div><div class="card-stats"><div><b>${c.PAC}</b><small>PAC</small></div><div><b>${c.SHO}</b><small>SHO</small></div><div><b>${c.PAS}</b><small>PAS</small></div><div><b>${c.DEF}</b><small>DEF</small></div><div><b>${c.PHY}</b><small>PHY</small></div><div><b>${c.ovr||cardOverall(c)}</b><small>OVR</small></div></div>${opts.actions===false?'':`<div class="card-actions"><button class="${equipped?'equipped':''}" data-equip="${c.id}" ${equipped?'disabled':''}>${isCurrent?'편성 중':equipped?'다른 슬롯 편성 중':'선발 배치'}</button></div>`}</div>`;
+}
+function updateWallet(){$('coins').textContent=coins.toLocaleString();$('packCoins').textContent=coins.toLocaleString();$('cardCount').textContent=cards.length;}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),1650)}
+
+// Match simulation: 6 blue (user + five AI cards) vs 5 red AI = 11 players total.
+let blue=[],red=[],ball,owner=null,lastTouch=null,selected=null,manual=true,training=false,score=[0,0],keys={},tick=0,totalUpdates=0,goalBoosts=0,goalPenalties=0,trainingSteps=0,clockTicks=0,camera={x:0,y:0},lastSave=0,lastSaveAt=0,matchDuration=180,matchFrame=0,matchActive=false,matchPaused=false,matchKind='idle',renderFrame=0,sessionStartedAt=0,pausedAt=0,accumulatedPause=0,loopErrorShown=false,loopErrorCount=0,lastLoopAt=0,accumulator=0,sessionGoalEvents=[];
+const emptyStats=()=>({blue:{shots:0,passes:0,tackles:0,possessionSeconds:0},red:{shots:0,passes:0,tackles:0,possessionSeconds:0}});let matchStats=emptyStats();goalBoosts=learningLogs.reduce((sum,e)=>sum+(Number(e.positive)||0),0);goalPenalties=learningLogs.reduce((sum,e)=>sum+(Number(e.negative)||0),0);
+function statEvent(side,key,amount=1){if(matchStats[side]&&key in matchStats[side])matchStats[side][key]+=amount;}
+function saveLearningLogs(){try{localStorage.setItem(LOG_KEY,JSON.stringify(learningLogs.slice(0,100)));}catch(e){}}
+function addLearningLog(item){learningLogs.unshift({time:Date.now(),...item});learningLogs=learningLogs.slice(0,100);saveLearningLogs();}
+function allPlayers(){return blue.concat(red)}function teamOf(s){return s==='blue'?blue:red}function oppOf(p){return p.side==='blue'?red:blue}function sign(p){return p.side==='blue'?1:-1}function ownGoal(p){return p.side==='blue'?FIELD.l:FIELD.r}function enemyGoal(p){return p.side==='blue'?FIELD.r:FIELD.l}function dist(a,b){return hypot(a.x-b.x,a.y-b.y)}function rand(min,max){return min+Math.random()*(max-min);}
+function userCard(){return {id:'user_avatar',name:'MY PLAYER',role:'FWD',ovr:80,PAC:80,SHO:80,PAS:78,DEF:55,PHY:72,rarity:'rare',skill:'캡틴'};}
+function redCard(i,role){const s=[{PAC:65,SHO:35,PAS:64,DEF:84,PHY:78},{PAC:70,SHO:48,PAS:66,DEF:80,PHY:77},{PAC:74,SHO:68,PAS:76,DEF:65,PHY:68},{PAC:71,SHO:65,PAS:78,DEF:67,PHY:71},{PAC:82,SHO:80,PAS:70,DEF:48,PHY:75}][i];return{id:'cpu_'+i,name:['CPU KEEPER','CPU WALL','CPU LINK','CPU ENGINE','CPU STRIKER'][i],role,rarity:'common',...s,ovr:Math.round(Object.values(s).reduce((a,b)=>a+b,0)/5),skill:'CPU TACTIC'};}
+function createTeam(side,formation){return formation.map((f,i)=>{
+ const card=side==='blue'?(i<5?getCard(lineup[i]):userCard()):redCard(i,f.role),id=side==='blue'?(i<5?'card_'+card.id:'user_avatar'):'cpu_'+i;
+ const brain=normalizeBrain(brains[id]);return{id,card,side,num:i+1,role:f.role,x:f.x,y:f.y,vx:0,vy:0,homeX:f.x,homeY:f.y,r:PR,brain,actionHistory:[],targetX:f.x,targetY:f.y,action:2,prevState:null,prevAction:null,lastBallX:0,faceX:side==='blue'?1:-1,faceY:0};
+ });}
+function nearestToBall(team){let best=null,bd=1e9;for(const p of team){const dd=dist(p,ball);if(dd<bd){bd=dd;best=p}}return best}
+function stat(p,key){let v=p.card?.[key]??70;if(p.card&&p.card.role!==p.role&&p.card.id!=='user_avatar')v*=.94;return v;}
+function possession(p){if(owner)return owner.side===p.side?'team':'enemy';if(lastTouch)return lastTouch.side===p.side?'team':'enemy';return'free';}
+function stateKey(p,nearest){const progress=(ball.x/900)*sign(p),zone=progress<-.34?'back':progress>.34?'front':'middle',opp=Math.min(...oppOf(p).map(o=>dist(p,o)));return[p.role,zone,possession(p),nearest===p?'nearest':'support',opp<115?'pressure':'space',owner===p?'has':'off'].join('|');}
+function qRow(p,s){if(!Array.isArray(p.brain.q[s]))p.brain.q[s]=[0,0,0,0,0];return p.brain.q[s]}
+function policyRow(p,s){if(!Array.isArray(p.brain.policy[s]))p.brain.policy[s]=[0,0,0,0,0];return p.brain.policy[s]}
+function maxQ(row){return Math.max(...row)}
+function heuristic(p,nearest){const own=possession(p)==='team',enemy=possession(p)==='enemy',near=nearest===p,pac=stat(p,'PAC'),pas=stat(p,'PAS'),def=stat(p,'DEF');return[(near&&!own?1.15:0)+(def-70)*.018+(p.role==='DEF'?.15:0),(own&&p.role!=='GK'?1.0:0)+(pas-70)*.018+(p.role==='MID'?.25:0),(p.role==='GK'?.4:p.role==='DEF'?.2:0),(enemy&&p.role!=='FWD'?.85:0)+(def-70)*.014+(p.role==='DEF'?.28:0),(own&&p.role==='FWD'?1.0:0)+(pac-70)*.018+(own&&p.role==='MID'?.32:0)];}
+function probs(p,s,nearest){const q=qRow(p,s),pol=policyRow(p,s),bias=heuristic(p,nearest),logits=ACTIONS.map((_,i)=>clamp(pol[i],-4,4)+bias[i]+clamp(q[i],-3,3)*.34),m=Math.max(...logits),ex=logits.map(v=>Math.exp((v-m)/(training?1.16:.9))),sum=ex.reduce((a,b)=>a+b,0)||1,eps=training?.18:.04;return ex.map(v=>(1-eps)*v/sum+eps/5);}
+function rewardFor(p){const teamPoss=owner?owner.side===p.side:lastTouch?lastTouch.side===p.side:false,nearest=nearestToBall(teamOf(p.side))===p,progress=(ball.x-p.lastBallX)*sign(p),oppDist=Math.min(...oppOf(p).map(o=>dist(p,o)));let r=progress*.004+(teamPoss?.035:-.025);if(nearest&&!teamPoss)r+=.08;if(owner===p)r+=.05;if(p.action===0&&nearest&&!teamPoss)r+=.035;if(p.action===1&&teamPoss&&p.role!=='GK')r+=.04;if(p.action===3&&!teamPoss&&p.role==='DEF')r+=.025;if(oppDist<55&&p.action===0)r+=.025;return clamp(r,-.25,.25);}
+function updateLearning(p,next,terminal=false,extra=0){if(p.prevState===null||p.prevAction===null){p.lastBallX=ball.x;return;}const row=qRow(p,p.prevState),future=qRow(p,next),r=rewardFor(p)+extra,alpha=.11,gamma=.88,a=p.prevAction;row[a]+=alpha*(r+(terminal?0:gamma*maxQ(future))-row[a]);p.brain.updates++;totalUpdates++;p.lastBallX=ball.x;}
+function teamBallRank(p){return teamOf(p.side).slice().sort((a,b)=>dist(a,ball)-dist(b,ball)).indexOf(p);}
+function teamTactic(p){return p.side==='blue'?tacticsPreset:(difficulty==='hard'?'highpress':'balanced');}
+function chooseAction(p,nearest){
+ const s=stateKey(p,nearest),teamOwn=!!owner&&owner.side===p.side,teamEnemy=!!owner&&owner.side!==p.side,rank=teamBallRank(p),tactic=teamTactic(p);
+ // Strategic scores are the primary decision. Learned Q/policy values are deliberately
+ // a smaller modifier so early noisy training cannot destroy basic football positioning.
+ let v=[0.05,0.25,0.65,0.35,0.15]; // press, support, hold, cover, run
+ if(teamOwn){
+  v=[-0.45,1.05,0.78,0.48,0.72];
+  if(p.role==='FWD'){v[1]+=.25;v[4]+=1.05;v[2]-=.2;}
+  if(p.role==='MID'){v[1]+=.85;v[2]+=.2;v[4]+=.25;}
+  if(p.role==='DEF'){v[2]+=.55;v[3]+=.55;v[4]-=.35;}
+  if(p.role==='GK')v=[-1,-.5,2.0,1.0,-1];
+  if(tactic==='possession'){v[1]+=.65;v[2]+=.38;v[4]-=.25;}
+  if(tactic==='counter'){v[4]+=.8;v[1]+=.25;}
+  if(tactic==='highpress'){v[4]+=.22;}
+  if(tactic==='lowblock'){v[2]+=.5;v[3]+=.65;v[4]-=.55;}
+ }else if(teamEnemy){
+  v=[-0.1,.0,.45,1.0,-.3];
+  if(rank===0)v[0]=3.0;             // one player presses the carrier
+  else if(rank===1){v[3]=2.65;v[0]=.42;} // second player screens passing lanes
+  else {v[2]=1.15;v[3]=p.role==='DEF'?1.65:.85;}
+  if(p.role==='DEF')v[3]+=.45;
+  if(p.role==='MID')v[3]+=.28;
+  if(p.role==='FWD'&&rank<2)v[0]+=.35;
+  if(tactic==='highpress'&&rank<3)v[0]+=(rank===0?.65:.35);
+  if(tactic==='lowblock'){v[3]+=.5;v[2]+=.35;v[0]-=.45;}
+  if(tactic==='counter'&&rank>1)v[2]+=.35;
+ }else{
+  // Loose ball: only the closest player attacks it; the rest protect useful lanes.
+  if(rank===0)v=[2.8,.1,.15,.3,-.5];
+  else if(rank===1)v=[.15,1.1,.4,1.15,-.25];
+  else v=[-.55,.0,1.35,p.role==='DEF'?1.15:.45,-.6];
+  if(p.role==='FWD'&&rank>1)v[4]+=.25;
+  if(tactic==='highpress'&&rank<3)v[0]+=.3;
+  if(tactic==='lowblock'){v[2]+=.35;v[3]+=.35;}
+ }
+ const q=qRow(p,s),pol=policyRow(p,s);
+ for(let i=0;i<5;i++)v[i]+=clamp(pol[i]*.12,-.48,.48)+clamp(q[i]*.10,-.32,.32)+(p.action===i?.22:0);
+ const temperature=training?.58:.38,m=Math.max(...v),ex=v.map(x=>Math.exp((x-m)/temperature)),sum=ex.reduce((a,b)=>a+b,0)||1,eps=training?.08:.025;
+ const distribution=ex.map(x=>(1-eps)*x/sum+eps/5);
+ let r=Math.random(),a=distribution.length-1;for(let i=0;i<distribution.length;i++){r-=distribution[i];if(r<=0){a=i;break;}}
+ p.prevState=s;p.prevAction=a;p.action=a;p.brain.lastState=s;p.brain.lastAction=a;p.brain.lastProbs=distribution.slice();
+ const prev=p.actionHistory.findIndex(e=>e.state===s&&e.action===a);if(prev>=0)p.actionHistory.splice(prev,1);
+ p.actionHistory.push({state:s,action:a,at:tick});if(p.actionHistory.length>50)p.actionHistory.shift();
+}
+function dribbleTarget(p){
+ const sg=sign(p),candidates=[clamp(p.y-145,FIELD.t+90,FIELD.b-90),p.y,clamp(p.y+145,FIELD.t+90,FIELD.b-90)];let bestY=p.y,best=-1e9;
+ for(const cy of candidates){const probe={x:clamp(p.x+sg*210,FIELD.l+60,FIELD.r-60),y:cy};let space=260;for(const o of oppOf(p))space=Math.min(space,dist(probe,o));const centrality= Math.abs(cy)*.035;const continuity=Math.abs(cy-p.y)*.08;const value=space-centrality-continuity;if(value>best){best=value;bestY=cy;}}
+ return{x:clamp(p.x+sg*190,FIELD.l+55,FIELD.r-55),y:clamp(bestY*.68+p.y*.32,FIELD.t+50,FIELD.b-50)};
+}
+function targetFor(p,nearest){
+ const sg=sign(p),rank=teamBallRank(p),own=!!owner&&owner.side===p.side,enemy=!!owner&&owner.side!==p.side,tactic=teamTactic(p);
+ let x=p.homeX,y=p.homeY;
+ if(p.role==='GK'){
+  x=ownGoal(p)+sg*76;y=clamp(ball.y*.34,-GOAL_HALF*.76,GOAL_HALF*.76);
+  if(enemy&&Math.abs(ball.x-ownGoal(p))<360){x=ownGoal(p)+sg*42;y=clamp(ball.y*.52,-GOAL_HALF*.83,GOAL_HALF*.83);}
+  else if(!own&&!enemy&&Math.abs(ball.x-ownGoal(p))<500){x=ownGoal(p)+sg*58;y=clamp(ball.y*.42,-GOAL_HALF*.8,GOAL_HALF*.8);}
+  return{x:clamp(x,FIELD.l+42,FIELD.r-42),y:clamp(y,FIELD.t+42,FIELD.b-42)};
+ }
+ const laneSign=p.homeY===0?(p.num%2? -1:1):(p.homeY<0?-1:1),homeLane=Math.abs(p.homeY)>80?p.homeY:laneSign*145;
+ if(own){
+  if(p.role==='DEF'){
+   x=ball.x-sg*(p.action===3?235:165);y=homeLane*.68+ball.y*.32;
+   if(tactic==='counter')x-=sg*35;
+  }else if(p.role==='MID'){
+   x=ball.x+sg*(p.action===4?145:78);y=ball.y*.47+homeLane*.53;
+   if(tactic==='possession'){x=ball.x+sg*48;y=ball.y*.35+homeLane*.65;}
+   if(tactic==='counter')x+=sg*82;
+  }else{
+   x=ball.x+sg*(p.action===4?285:190);y=ball.y*.38+homeLane*.62;
+   if(tactic==='counter')x+=sg*105;
+   if(tactic==='lowblock')x-=sg*75;
+  }
+  if(p.action===2){x=p.homeX+(ball.x-p.homeX)*.34;y=p.homeY*.62+ball.y*.38;}
+  if(p.action===3){x=ball.x-sg*210;y=homeLane*.75+ball.y*.25;}
+ }else if(enemy){
+  const carrier=owner||ball;
+  if(rank===0){
+   x=(owner?carrier.x+carrier.vx*5:ball.x+ball.vx*5)-sg*18;
+   y=(owner?carrier.y+carrier.vy*5:ball.y+ball.vy*5);
+  }else if(rank===1){
+   x=ownGoal(p)*.48+ball.x*.52-sg*28;
+   y=ball.y*.58+homeLane*.42;
+   if(p.role==='DEF')x-=sg*65;
+  }else{
+   const depth=p.role==='DEF'?245:p.role==='MID'?145:205;
+   x=ball.x-sg*depth;y=homeLane*.64+ball.y*.36;
+   if(p.role==='FWD'&&tactic==='highpress')x+=sg*55;
+  }
+  if(tactic==='highpress'&&rank<3)x+=sg*45;
+  if(tactic==='lowblock')x-=sg*105;
+ }else{
+  if(rank===0){x=ball.x+ball.vx*6-sg*12;y=ball.y+ball.vy*6;}
+  else if(rank===1){x=ball.x-sg*90;y=ball.y*.55+homeLane*.45;}
+  else{x=p.homeX+(ball.x-p.homeX)*.10;y=p.homeY*.72+ball.y*.28;}
+ }
+ // Gentle separation keeps teammates from collapsing into one another while retaining shape.
+ let sx=0,sy=0;for(const mate of teamOf(p.side)){if(mate===p)continue;const dx=p.x-mate.x,dy=p.y-mate.y,d=hypot(dx,dy);if(d>0&&d<82){const w=(82-d)/82;sx+=(dx/d)*w*24;sy+=(dy/d)*w*24;}}
+ x+=sx;y+=sy;
+ return{x:clamp(x,FIELD.l+48,FIELD.r-48),y:clamp(y,FIELD.t+42,FIELD.b-42)};
+}
+function moveToward(p,tx,ty,speed){const dx=tx-p.x,dy=ty-p.y,dd=hypot(dx,dy);if(dd>3){const v=norm(dx,dy);p.vx+=(v.x*speed-p.vx)*.29;p.vy+=(v.y*speed-p.vy)*.29;p.faceX=v.x;p.faceY=v.y;}else{p.vx*=.65;p.vy*=.65;}p.x=clamp(p.x+p.vx,FIELD.l+PR,FIELD.r-PR);p.y=clamp(p.y+p.vy,FIELD.t+PR,FIELD.b-PR);}
+function pointSegmentDistance(px,py,ax,ay,bx,by){const dx=bx-ax,dy=by-ay,l2=dx*dx+dy*dy||1,t=clamp(((px-ax)*dx+(py-ay)*dy)/l2,0,1);return hypot(px-(ax+t*dx),py-(ay+t*dy));}
+function passLaneClearance(p,target){let clear=220;for(const o of oppOf(p)){const d=pointSegmentDistance(o.x,o.y,p.x,p.y,target.x,target.y);if(d<clear)clear=d;}return clear;}
+function bestPassTarget(p){
+ let best=null,bestScore=-1e9;const sg=sign(p),goalX=enemyGoal(p);
+ for(const m of teamOf(p.side)){if(m===p)continue;const sep=dist(p,m);if(sep<75||sep>650)continue;
+  const forward=(m.x-p.x)*sg,space=Math.min(...oppOf(m).map(o=>dist(m,o))),lane=passLaneClearance(p,m),toGoal=dist(m,{x:goalX,y:clamp(m.y*.25,-GOAL_HALF*.5,GOAL_HALF*.5)});
+  let role= m.role==='FWD'?24:m.role==='MID'?15:m.role==='DEF'?4:-12;
+  if(m===selected&&manual&&!training)role+=12;
+  let score=forward*.25+Math.min(space,250)*.36+Math.min(lane,180)*.48-sep*.075+role;
+  if(forward< -30)score-=42;if(forward< -180)score-=30;
+  if(toGoal<420&&m.role==='FWD')score+=30;
+  if(lane<32)score-=75;else if(lane>85)score+=18;
+  if(space<48)score-=36;
+  if(score>bestScore){bestScore=score;best=m;}
+ }
+ return best;
+}
+function kick(p,target,power,kind='pass'){const n=norm(target.x-ball.x,target.y-ball.y);ball.vx=n.x*power;ball.vy=n.y*power;lastTouch=p;owner=null;statEvent(p.side,kind==='shot'?'shots':'passes');}
+function aiPossession(p){
+ if(!p||owner!==p)return;
+ if(p.lastAIDecisionTick!==undefined&&tick-p.lastAIDecisionTick<18)return;
+ p.lastAIDecisionTick=tick;
+ const sg=sign(p),goalX=enemyGoal(p),goal={x:goalX,y:clamp(ball.y*.20,-GOAL_HALF*.58,GOAL_HALF*.58)},toGoal=dist(p,goal),shoot=stat(p,'SHO')/100,passSkill=stat(p,'PAS')/100;
+ const pressure=Math.min(...oppOf(p).map(o=>dist(o,p))),pass=bestPassTarget(p),lane=pass?passLaneClearance(p,pass):0,space=pass?Math.min(...oppOf(p).map(o=>dist(o,pass))):0,forward=pass?(pass.x-p.x)*sg:-999;
+ // Select shot target away from the goalkeeper and nearby defenders.
+ let shotY=0;const keeper=oppOf(p).find(o=>o.role==='GK');const candidates=[-GOAL_HALF*.62,GOAL_HALF*.62,0];let shotBest=-1e9;
+ for(const y of candidates){const gkGap=keeper?Math.abs(y-keeper.y)*.95:80,otherGap=Math.min(...oppOf(p).filter(o=>o!==keeper).map(o=>dist(o,{x:goalX,y})),240);const value=gkGap+Math.min(otherGap,170)*.32-Math.abs(y-ball.y)*.12;if(value>shotBest){shotBest=value;shotY=y;}}
+ const shotRange=p.role==='FWD'?700:p.role==='MID'?560:390;
+ const shotChance=clamp(.18+(shotRange-toGoal)/Math.max(shotRange,1)*.62+(shoot-.70)*.42+(pressure>105?.16:-.14),.04,.94);
+ const clearPass=!!pass&&lane>34&&space>52;
+ const passIsUseful=clearPass&&(forward>72||pressure<90||(p.role==='DEF'&&toGoal>900));
+ if(toGoal<245|| (toGoal<shotRange&&Math.random()<shotChance&&( !passIsUseful||toGoal<350||pressure>135))){
+  const aim={x:goalX,y:shotY+rand(-1,1)*(100-stat(p,'SHO')*.60)};const power=clamp(13+shoot*6.2,14,21);kick(p,aim,power,'shot');p.lastAIDecisionTick=tick;return;
+ }
+ const passUrgency=pressure<88|| (forward>110&&toGoal>330) || (pressure<145&&lane>105&&passSkill>.73) || (tacticsPreset==='possession'&&forward>35&&lane>80);
+ if(passIsUseful&&passUrgency){const power=clamp(8.5+dist(p,pass)*.006+passSkill*3.5,9,14);kick(p,pass,power,'pass');p.lastAIDecisionTick=tick;return;}
+ // If the direct lane is blocked, recycle possession instead of blindly running into a defender.
+ if(pressure<58&&pass&&clearPass&&forward>-100){kick(p,pass,clamp(9+dist(p,pass)*.006,9,13),'pass');return;}
+}
+function userKick(shot){if(owner!==selected){toast('공을 소유하거나 가까이 있어야 해!');return;}if(shot){const goal={x:enemyGoal(selected),y:clamp(ball.y+(keys.arrowup?-65:keys.arrowdown?65:0),-GOAL_HALF*.78,GOAL_HALF*.78)},n=norm(goal.x-ball.x,goal.y-ball.y),power=13+stat(selected,'SHO')*.045;ball.vx=n.x*power;ball.vy=n.y*power;lastTouch=selected;owner=null;statEvent(selected.side,'shots');toast('슛!');}else{const target=bestPassTarget(selected);if(!target){toast('패스할 동료가 없어!');return;}kick(selected,target,10+stat(selected,'PAS')*.045);toast('패스!');}}
+function acquireBall(){if(owner){const f=norm(owner.faceX||sign(owner),owner.faceY||0);ball.x=owner.x+f.x*(PR+BR+3);ball.y=owner.y+f.y*(PR+BR+3);ball.vx=owner.vx*.75;ball.vy=owner.vy*.75;return;}if(Math.hypot(ball.vx,ball.vy)>4.8)return;let best=null,bd=PR+BR+7;for(const p of allPlayers()){const dd=dist(p,ball);if(dd<bd){bd=dd;best=p;}}if(best){owner=best;lastTouch=best;}}
+function updateBall(){if(!owner){ball.x+=ball.vx;ball.y+=ball.vy;ball.vx*=.992;ball.vy*=.992;if(Math.abs(ball.vx)+Math.abs(ball.vy)<.06)ball.vx=ball.vy=0;if(ball.y<FIELD.t+BR||ball.y>FIELD.b-BR){ball.y=clamp(ball.y,FIELD.t+BR,FIELD.b-BR);ball.vy*=-.7;}if((ball.x<FIELD.l+BR||ball.x>FIELD.r-BR)&&Math.abs(ball.y)>GOAL_HALF){ball.x=clamp(ball.x,FIELD.l+BR,FIELD.r-BR);ball.vx*=-.7;}}acquireBall();}
+function reinforce(p,result){const history=p.actionHistory||[];if(!history.length)return 0;const recent=history.slice(-40),groups=new Map();recent.forEach((e,i)=>{const weight=.35+.65*((i+1)/recent.length),k=e.state+'::'+e.action,item=groups.get(k)||{state:e.state,action:e.action,weight:0};item.weight+=weight;groups.set(k,item);});let count=0;for(const item of groups.values()){const credit=Math.min(1,item.weight/2.8),pol=policyRow(p,item.state),delta=.46*credit*result;pol[item.action]=clamp(pol[item.action]+delta,-4,4);for(let i=0;i<5;i++)if(i!==item.action)pol[i]=clamp(pol[i]-delta/4,-4,4);const q=qRow(p,item.state);q[item.action]=clamp(q[item.action]+.56*credit*result,-8,8);p.brain.updates++;totalUpdates++;count++;}if(result>0)p.brain.goalsFor++;else p.brain.goalsAgainst++;p.brain.lastOutcome=result;p.actionHistory=[];return count;}
+function onGoal(side){
+ score[side==='blue'?0:1]++;const scorer=lastTouch&&lastTouch.side===side?lastTouch.card.name:'자책골 / 굴절';sessionGoalEvents.push({side,scorer,second:clockTicks});const actionSummary={blue:{},red:{}};for(const p of allPlayers()){for(const e of (p.actionHistory||[]).slice(-12)){const k=ACTIONS[e.action];actionSummary[p.side][k]=(actionSummary[p.side][k]||0)+1;}}
+ let positive=0,negative=0;for(const p of allPlayers()){const result=p.side===side?1:-1;updateLearning(p,stateKey(p,nearestToBall(teamOf(p.side))),true,result>0?2.2:-2.2);const changed=reinforce(p,result);if(result>0){goalBoosts+=changed;positive+=changed;}else{goalPenalties+=changed;negative+=changed;}p.prevState=null;p.prevAction=null;}
+ addLearningLog({type:'goal',side,score:score.slice(),headline:side==='blue'?'PITCH UNITED 득점':'CPU SELECT 득점',detail:`행동 확률 강화 ${positive}회 · 억제 ${negative}회`,positive,negative,actions:actionSummary});
+ if(matchKind==='match'){if(side==='blue'){coins+=80;toast('GOAL! 득점 보상 +80 코인!');}else{coins+=20;toast('실점! AI가 직전 행동을 분석했어.');}saveClub();}else toast(side==='blue'?'훈련 득점 · 공격 행동을 강화했어':'훈련 실점 · 수비 행동을 조정했어');
+ saveBrains();ball={x:0,y:0,vx:0,vy:0};owner=null;lastTouch=null;blue.forEach((p,i)=>{p.x=FORM_BLUE[i].x;p.y=FORM_BLUE[i].y;p.vx=p.vy=0;});red.forEach((p,i)=>{p.x=FORM_RED[i].x;p.y=FORM_RED[i].y;p.vx=p.vy=0;});renderAiLab();
+}
+function goalCheck(){if(ball.x>FIELD.r+12&&Math.abs(ball.y)<GOAL_HALF)onGoal('blue');if(ball.x<FIELD.l-12&&Math.abs(ball.y)<GOAL_HALF)onGoal('red');}
+function syncSessionClock(){
+ if(!matchActive||!sessionStartedAt)return;
+ const now=matchPaused&&pausedAt?pausedAt:Date.now();
+ const elapsed=Math.min(matchDuration,Math.max(0,Math.floor((now-sessionStartedAt-accumulatedPause)/1000)));
+ if(elapsed>clockTicks){const passed=elapsed-clockTicks;clockTicks=elapsed;if(owner)statEvent(owner.side,'possessionSeconds',passed);}
+ if(clockTicks>=matchDuration){if(matchKind==='training')finishTraining();else finishMatch();}
+}
+function step(){
+ if(!matchActive)return;
+ syncSessionClock();if(!matchActive)return;
+ tick++;matchFrame++;
+ const controlled=manual&&!training?selected:null;
+ for(const p of allPlayers()){
+  const nearest=nearestToBall(teamOf(p.side));
+  if(p===controlled){let dx=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dy=(keys.s||keys.arrowdown?1:0)-(keys.w||keys.arrowup?1:0);if(dx||dy){const n=norm(dx,dy),speed=2.9+stat(p,'PAC')*.018;p.vx+=(n.x*speed-p.vx)*.38;p.vy+=(n.y*speed-p.vy)*.38;p.faceX=n.x;p.faceY=n.y;}else{p.vx*=.72;p.vy*=.72;}p.x=clamp(p.x+p.vx,FIELD.l+PR,FIELD.r-PR);p.y=clamp(p.y+p.vy,FIELD.t+PR,FIELD.b-PR);continue;}
+  if(tick%12===0){updateLearning(p,stateKey(p,nearest));chooseAction(p,nearest);}const target=targetFor(p,nearest);p.targetX=target.x;p.targetY=target.y;let speed=2.1+stat(p,'PAC')*.011;if(p.role==='GK')speed*=.85;if(p.side==='red')speed*=({easy:.91,normal:1,hard:1.09}[difficulty]||1);if(training)speed*=1.13;if(owner===p){const carry=dribbleTarget(p);moveToward(p,carry.x,carry.y,speed*.88);aiPossession(p);}else moveToward(p,target.x,target.y,speed);
+ }
+ updateBall();goalCheck();if(owner){const carrier=owner;for(const opp of oppOf(carrier)){const tackle=stat(opp,'DEF')/100;if(dist(opp,carrier)<PR*2.2&&Math.random()<(.008+tackle*.023)*(carrier.side==='red'?({easy:.82,normal:1,hard:1.16}[difficulty]||1):1)){owner=opp;lastTouch=opp;statEvent(opp.side,'tackles');break;}}}
+ if(training&&clockTicks>trainingSteps)trainingSteps=clockTicks;
+ if(Date.now()-lastSaveAt>5000){saveBrains();lastSave=tick;lastSaveAt=Date.now();}
+}
+function switchPlayer(){const i=blue.indexOf(selected);selected=blue[(i+1)%blue.length];camera.x=selected.x-W/2;camera.y=selected.y-H/2;toast(`${selected.num}번 ${selected.role} 선택`);updateHUD();}
+function updateFieldView(){const fw=FIELD.r-FIELD.l,fh=FIELD.b-FIELD.t,pad=34;fieldScale=Math.min((W-pad*2)/fw,(H-pad*2)/fh);fieldOffsetX=(W-fw*fieldScale)/2-FIELD.l*fieldScale;fieldOffsetY=(H-fh*fieldScale)/2-FIELD.t*fieldScale;}
+function fieldToScreen(x,y){return{x:x*fieldScale+fieldOffsetX,y:y*fieldScale+fieldOffsetY}}
+function drawField(){
+ const f=fieldToScreen(FIELD.l,FIELD.t),ww=(FIELD.r-FIELD.l)*fieldScale,hh=(FIELD.b-FIELD.t)*fieldScale;
+ ctx.fillStyle='#236f3c';ctx.fillRect(0,0,W,H);ctx.fillStyle='#174f30';ctx.fillRect(f.x,f.y,ww,hh);
+ for(let i=0;i<16;i++){ctx.fillStyle=i%2?'rgba(255,255,255,.045)':'rgba(0,0,0,.045)';ctx.fillRect(f.x+i*ww/16,f.y,ww/16,hh);}
+ ctx.strokeStyle='rgba(245,255,245,.94)';ctx.lineWidth=2.4;ctx.strokeRect(f.x,f.y,ww,hh);
+ const m=fieldToScreen(0,0),lineX=m.x;
+ ctx.beginPath();ctx.moveTo(lineX,f.y);ctx.lineTo(lineX,f.y+hh);ctx.stroke();
+ ctx.beginPath();ctx.arc(m.x,m.y,112*fieldScale,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.arc(m.x,m.y,3.2,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+ for(const side of [-1,1]){
+  const boxX=side===-1?FIELD.l:FIELD.r-180,box=fieldToScreen(boxX,-195);
+  ctx.strokeRect(box.x,box.y,180*fieldScale,390*fieldScale);
+  const smallX=side===-1?FIELD.l:FIELD.r-60,small=fieldToScreen(smallX,-100);
+  ctx.strokeRect(small.x,small.y,60*fieldScale,200*fieldScale);
+  const spot=fieldToScreen(side===-1?FIELD.l+115:FIELD.r-115,0);
+  ctx.beginPath();ctx.arc(spot.x,spot.y,3,0,Math.PI*2);ctx.fill();
+  const arcX=side===-1?FIELD.l+115:FIELD.r-115;const arc=fieldToScreen(arcX,0);
+  ctx.beginPath();ctx.arc(arc.x,arc.y,105*fieldScale,side===-1?-.9:Math.PI-.9,side===-1?.9:Math.PI+.9);ctx.stroke();
+  const gx=side===-1?FIELD.l-30:FIELD.r-30,g=fieldToScreen(gx,-GOAL_HALF);
+  ctx.fillStyle='#dfe9ee22';ctx.fillRect(g.x,g.y,60*fieldScale,GOAL_HALF*2*fieldScale);
+  ctx.strokeStyle='#f4fbff';ctx.lineWidth=4;ctx.strokeRect(g.x,g.y,60*fieldScale,GOAL_HALF*2*fieldScale);ctx.lineWidth=2.4;
+ }
+ // Corner arcs add a clear broadcast-style pitch finish.
+ for(const [x,y,sx,sy] of [[FIELD.l,FIELD.t,1,1],[FIELD.r,FIELD.t,-1,1],[FIELD.l,FIELD.b,1,-1],[FIELD.r,FIELD.b,-1,-1]]){
+  const c=fieldToScreen(x,y);ctx.beginPath();ctx.arc(c.x,c.y,24*fieldScale,0,Math.PI/2);ctx.stroke();
+ }
+}
+function drawPlayer(p){const s=fieldToScreen(p.x,p.y),blueSide=p.side==='blue';ctx.save();ctx.translate(s.x,s.y);ctx.fillStyle='#0007';ctx.beginPath();ctx.ellipse(2,12,15,7,0,0,Math.PI*2);ctx.fill();if(p===selected){ctx.beginPath();ctx.arc(0,1,24,0,Math.PI*2);ctx.strokeStyle='#ffe179';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#ffe179';ctx.beginPath();ctx.moveTo(0,-31);ctx.lineTo(-6,-39);ctx.lineTo(6,-39);ctx.closePath();ctx.fill();}if(owner===p){ctx.beginPath();ctx.arc(0,1,20,0,Math.PI*2);ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);}const shirt=blueSide?'#1687e8':'#e64e58',edge=blueSide?'#b8e7ff':'#ffd0d2';ctx.fillStyle='#101923';ctx.beginPath();ctx.roundRect(-9,8,7,9,2);ctx.roundRect(2,8,7,9,2);ctx.fill();ctx.fillStyle=shirt;ctx.strokeStyle=edge;ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(-13,-8,26,21,7);ctx.fill();ctx.stroke();ctx.fillStyle='#f4d2b2';ctx.beginPath();ctx.arc(0,-15,8,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#754c3c';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#fff';ctx.font='900 11px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.num,0,2);ctx.restore();}
+function drawBall(){const s=fieldToScreen(ball.x,ball.y);ctx.fillStyle='#0006';ctx.beginPath();ctx.ellipse(s.x+2,s.y+4,8,4,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.strokeStyle='#15212b';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(s.x,s.y,BR,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(s.x-3,s.y);ctx.lineTo(s.x+3,s.y);ctx.moveTo(s.x,s.y-3);ctx.lineTo(s.x,s.y+3);ctx.stroke();}
+function arrowTo(wx,wy,color,label){const p=fieldToScreen(wx,wy),margin=32;if(p.x>margin&&p.x<W-margin&&p.y>margin&&p.y<H-margin)return;const dx=p.x-W/2,dy=p.y-H/2,sc=Math.min((W/2-margin)/(Math.abs(dx)||1),(H/2-margin)/(Math.abs(dy)||1)),x=clamp(W/2+dx*sc,margin,W-margin),y=clamp(H/2+dy*sc,margin,H-margin),a=Math.atan2(dy,dx);ctx.save();ctx.translate(x,y);ctx.rotate(a);ctx.fillStyle=color;ctx.strokeStyle='#13222c';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(14,0);ctx.lineTo(-9,-8);ctx.lineTo(-5,0);ctx.lineTo(-9,8);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();}
+function miniMap(){if(W<600)return;const mw=170,mh=104,x=W-mw-16,y=H-mh-15,sx=mw/(FIELD.r-FIELD.l),sy=mh/(FIELD.b-FIELD.t);ctx.fillStyle='#06140fdc';ctx.fillRect(x-5,y-5,mw+10,mh+10);ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(x,y,mw,mh);ctx.beginPath();ctx.moveTo(x+mw/2,y);ctx.lineTo(x+mw/2,y+mh);ctx.stroke();for(const p of allPlayers()){ctx.fillStyle=p.side==='blue'?'#28a0ff':'#ff646d';ctx.beginPath();ctx.arc(x+(p.x-FIELD.l)*sx,y+(p.y-FIELD.t)*sy,2.8,0,Math.PI*2);ctx.fill();}ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x+(ball.x-FIELD.l)*sx,y+(ball.y-FIELD.t)*sy,2.5,0,Math.PI*2);ctx.fill();}
+function draw(){ctx.clearRect(0,0,W,H);drawField();for(const p of blue)if(p!==selected)arrowTo(p.x,p.y,'#1687e8',String(p.num));arrowTo(ball.x,ball.y,'#fff','');for(const p of allPlayers())drawPlayer(p);drawBall();miniMap();}
+function saveBrains(){for(const p of allPlayers())brains[p.id]=p.brain;try{localStorage.setItem(BRAIN_KEY,JSON.stringify(brains));}catch(e){}updateHUD();}
+function formatClock(sec){sec=Math.max(0,sec|0);return String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');}
+function currentRemaining(){const end=matchPaused&&pausedAt?pausedAt:Date.now();const elapsed=sessionStartedAt?Math.floor((end-sessionStartedAt-accumulatedPause)/1000):clockTicks;return Math.max(0,matchDuration-Math.max(clockTicks,elapsed));}
+function updateHUD(){
+ if(!selected)return;const c=selected.card;$('selectedAvatar').textContent=selected.num;$('selectedName').textContent=c.name;$('selectedRole').textContent=`${selected.role} · ${selected===blue[5]?'선수 조종':'Q로 선택된 선수'}`;
+ const arr=[['PAC',stat(selected,'PAC')],['SHO',stat(selected,'SHO')],['PAS',stat(selected,'PAS')],['DEF',stat(selected,'DEF')]];$('selectedStats').innerHTML=arr.map(([n,v])=>`<div class="stat-row"><span>${n}<b>${Math.round(v)}</b></span><div class="bar"><i style="width:${v}%"></i></div></div>`).join('');
+ $('scoreline').innerHTML=`${score[0]} <span>:</span> ${score[1]}`;$('clock').textContent=formatClock(currentRemaining());$('matchMode').textContent='모드 · '+(training?'AI 전원 훈련':matchKind==='match'?'제한 시간 경기':'직접 플레이 준비');$('ballStatus').textContent='공 소유 · '+(owner?owner.card.name:'없음');
+ $('blueShots').textContent=matchStats.blue.shots;$('redShots').textContent=matchStats.red.shots;$('bluePasses').textContent=matchStats.blue.passes;$('redPasses').textContent=matchStats.red.passes;
+ $('playMode').classList.add('primary');$('miniLineup').innerHTML=blue.map(p=>`<div class="mini-player"><span class="dot"></span><b>${p.num}. ${p.card.name}</b><small>${p.role} · ${cardOverall(p.card)}</small></div>`).join('');
+ $('pauseMatch').disabled=!(matchKind==='match'&&matchActive||matchPaused);$('pauseMatch').textContent=matchPaused?'계속하기':'일시정지';$('startMatch').disabled=matchKind==='match'&&matchActive;$('startMatch').textContent=matchKind==='finished'?'다시 경기 시작':'경기 시작';
+ $('matchState').textContent=matchActive?(training?'AI 훈련 경기 진행 중':`경기 진행 중 · ${formatClock(currentRemaining())} 남음`):matchPaused?'일시정지 중':matchKind==='finished'?'경기 종료 · 최종 결과 확인':matchKind==='training'?'AI 훈련 종료':'대기 중 · 경기 시작을 눌러줘';$('liveMark').textContent=matchActive?'● LIVE MATCH':matchKind==='finished'?'● FULL TIME':'● MATCH READY';
+}
+function resetPositions(){owner=null;lastTouch=null;ball={x:0,y:0,vx:0,vy:0};blue.forEach((p,i)=>{p.x=FORM_BLUE[i].x;p.y=FORM_BLUE[i].y;p.vx=p.vy=0;});red.forEach((p,i)=>{p.x=FORM_RED[i].x;p.y=FORM_RED[i].y;p.vx=p.vy=0;});camera.x=selected.x-W/2;camera.y=selected.y-H/2;}
+function resetMatch(){matchActive=false;matchPaused=false;training=false;manual=true;matchKind='idle';sessionStartedAt=0;pausedAt=0;accumulatedPause=0;score=[0,0];clockTicks=0;matchFrame=0;matchDuration=Number($('matchDuration')?.value)||180;matchStats=emptyStats();resetPositions();$('resultPanel').classList.remove('show');$('resultPanel').innerHTML='';updateHUD();toast('새 경기를 준비했어. 경기 시작을 눌러줘.');}
+function prepareSession(kind,duration){if(matchActive||matchPaused){toast('현재 진행 중인 세션을 먼저 종료해 줘.');return false;}applyLineup();training=kind==='training';manual=!training;matchKind=kind;matchDuration=duration;clockTicks=0;matchFrame=0;sessionStartedAt=Date.now();pausedAt=0;accumulatedPause=0;lastSaveAt=Date.now();accumulator=0;lastLoopAt=0;sessionGoalEvents=[];score=[0,0];matchStats=emptyStats();matchPaused=false;selected=blue[5];resetPositions();$('resultPanel').classList.remove('show');$('resultPanel').innerHTML='';$('pauseOverlay').classList.remove('show');matchActive=true;updateHUD();if(kind==='training'){toast(`${Math.round(duration/60)}분 AI 훈련 시작!`);renderAiLab();}else{toast(`${Math.round(duration/60)}분 제한 시간 경기 시작!`);}return true;}
+function startMatch(){
+ if(!prepareSession('match',Number($('matchDuration').value)||180))return;
+ setView('match');fitGameCanvas();
+ const root=document.documentElement;
+ if(root.requestFullscreen){const request=root.requestFullscreen();if(request&&request.catch)request.catch(()=>{});}
+ setTimeout(fitGameCanvas,120);
+}
+function startTraining(){if(!prepareSession('training',Number($('trainingDuration').value)||180))return;setView('lab');renderAiLab();}
+function togglePause(){if(matchKind!=='match'&&matchKind!=='training')return;if(matchActive){matchActive=false;matchPaused=true;pausedAt=Date.now();accumulator=0;keys={};toast('경기를 일시정지했어.');}else if(matchPaused&&clockTicks<matchDuration){accumulatedPause+=Date.now()-(pausedAt||Date.now());pausedAt=0;matchActive=true;matchPaused=false;lastLoopAt=0;accumulator=0;toast('경기를 다시 시작했어.');}if($('pauseOverlay'))$('pauseOverlay').classList.toggle('show',matchPaused&&matchKind==='match');updateHUD();renderAiLab();}
+function finishTraining(){matchActive=false;matchPaused=false;training=false;manual=true;matchKind='trainingDone';pausedAt=0;accumulator=0;addLearningLog({type:'training',headline:'AI 훈련 세션 완료',detail:`${Math.max(1,clockTicks)}초 진행 · 목표 ${Math.round(matchDuration/60)}분 · 최종 스코어 ${score[0]} : ${score[1]}`,score:score.slice()});saveBrains();toast('AI 훈련 완료! 학습 데이터가 저장됐어.');updateHUD();renderAiLab();}
+function finishMatch(){if($('pauseOverlay'))$('pauseOverlay').classList.remove('show');matchActive=false;matchPaused=false;training=false;manual=true;matchKind='finished';pausedAt=0;accumulator=0;const verdict=score[0]===score[1]?'무승부':score[0]>score[1]?'PITCH UNITED 승리':'CPU SELECT 승리';if(score[0]>score[1])coins+=100;else if(score[0]===score[1])coins+=40;else coins+=20;matchHistory.unshift({time:Date.now(),score:score.slice(),duration:matchDuration,result:score[0]>score[1]?'win':score[0]===score[1]?'draw':'loss',difficulty,goals:sessionGoalEvents.slice(),shots:[matchStats.blue.shots,matchStats.red.shots]});matchHistory=matchHistory.slice(0,30);saveMatchHistory();addLearningLog({type:'match',headline:`경기 종료 · ${verdict}`,detail:`${matchDuration/60}분 경기 · 최종 스코어 ${score[0]} : ${score[1]} · 코인 보상 지급`,score:score.slice()});saveClub();saveBrains();const totalShotsBlue=matchStats.blue.shots,totalShotsRed=matchStats.red.shots,posTotal=matchStats.blue.possessionSeconds+matchStats.red.possessionSeconds,bluePoss=posTotal?Math.round(matchStats.blue.possessionSeconds/posTotal*100):50,redPoss=100-bluePoss;const goalsHtml=sessionGoalEvents.length?`<div class="goal-timeline"><strong>득점 기록</strong>${sessionGoalEvents.map(g=>`<span>${formatClock(g.second)} · ${g.side==='blue'?'🔵':'🔴'} ${escapeHtml(g.scorer)}</span>`).join('')}</div>`:'<div class="goal-timeline"><strong>득점 기록</strong><span>이번 경기 득점 없음</span></div>';$('resultPanel').innerHTML=`<div class="result-head"><strong>${verdict}</strong><span>FULL TIME · ${formatClock(matchDuration)} · 최종 스코어 ${score[0]} : ${score[1]}</span></div><div class="result-stats"><div class="result-stat"><b>${totalShotsBlue}</b><small>BLUE 슈팅</small></div><div class="result-stat"><b>${totalShotsRed}</b><small>RED 슈팅</small></div><div class="result-stat"><b>${matchStats.blue.passes}</b><small>BLUE 패스</small></div><div class="result-stat"><b>${matchStats.red.passes}</b><small>RED 패스</small></div><div class="result-stat"><b>${matchStats.blue.tackles}</b><small>BLUE 태클</small></div><div class="result-stat"><b>${matchStats.red.tackles}</b><small>RED 태클</small></div><div class="result-stat"><b>${bluePoss}%</b><small>BLUE 점유율</small></div><div class="result-stat"><b>${redPoss}%</b><small>RED 점유율</small></div></div>${goalsHtml}<div class="result-actions"><button class="primary" id="resultToMenu">메인 메뉴로</button><button id="resultReplay">다시 경기</button></div>`;$('resultPanel').classList.add('show');toast(verdict);updateHUD();renderAiLab();renderHomeDashboard();}
+function initMatch(){blue=createTeam('blue',FORM_BLUE);red=createTeam('red',FORM_RED);selected=blue[5];ball={x:0,y:0,vx:0,vy:0};camera={x:selected.x-W/2,y:selected.y-H/2};totalUpdates=allPlayers().reduce((a,p)=>a+p.brain.updates,0);matchActive=false;matchPaused=false;matchKind='idle';matchDuration=180;clockTicks=0;matchFrame=0;updateHUD();}
+
+function applyLineup(){saveBrains();for(let i=0;i<5;i++){const c=getCard(lineup[i]),p=blue[i],newId='card_'+c.id;p.card=c;p.id=newId;p.role=FORM_BLUE[i].role;p.brain=normalizeBrain(brains[newId]);p.actionHistory=[];p.prevState=null;p.prevAction=null;}saveBrains();updateHUD();renderClub();toast('AI 선발 명단을 경기 팀에 반영했어.');}
+function renderClub(){ $('clubOvr').textContent=teamOverall();$('blueCount').textContent='5';$('brainCount').textContent='5';const slots=[{label:'AI 공격',ids:[4]},{label:'AI 미드필더',ids:[3,4]},{label:'AI 수비·골키퍼',ids:[0,1,2]}];const createSlot=(i)=>{const c=getCard(lineup[i]);return `<button class="lineup-slot ${selectedSlot===i?'active':''}" data-slot="${i}"><span class="pos">${SLOT_ROLES[i]} · ${roleName(SLOT_ROLES[i])}</span><span class="slot-rating">${cardOverall(c)}</span><strong>${escapeHtml(c.name)}</strong><small>${c.skill||'팀 플레이'} · 슬롯 선택</small></button>`;};$('lineupTop').innerHTML=createSlot(4);$('lineupMid').innerHTML=createSlot(3)+createSlot(2);$('lineupBack').innerHTML=createSlot(0)+createSlot(1)+`<div class="lineup-slot slot-user"><span class="pos">USER · CAPTAIN</span><span class="slot-rating">80</span><strong>MY PLAYER</strong><small>직접 조종 선수</small></div>`;$('collection').innerHTML=cards.map(c=>cardHtml(c,{isCurrent:lineup.includes(c.id)&&lineup[selectedSlot]===c.id})).join('');$('recentCards').innerHTML=[...cards].sort((a,b)=>b.created-a.created).slice(0,4).map(c=>cardHtml(c,{actions:false})).join('');$('cardCount').textContent=cards.length;}
+let selectedSlot=0,currentFilter='ALL',lastPulledId=null;
+function renderCollection(){const shown=cards.filter(c=>currentFilter==='ALL'||c.role===currentFilter);$('collection').innerHTML=shown.map(c=>cardHtml(c,{isCurrent:lineup.includes(c.id)&&lineup[selectedSlot]===c.id})).join('');}
+const ACTION_LABELS=['압박','지원','위치 유지','커버','침투'];
+function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+function brainCardHtml(p){
+ const human=p.id==='user_avatar',ai=true,nearest=nearestToBall(teamOf(p.side)),s=p.brain.lastState||stateKey(p,nearest),distribution=probs(p,s,nearest),labels=ACTION_LABELS;
+ const probsHtml=distribution.map((v,i)=>`<div class="action-prob"><span><b>${labels[i]}</b>${Math.round(v*100)}%</span><div class="prob-bar"><i style="width:${Math.round(v*100)}%"></i></div></div>`).join('');
+ return `<div class="brain-card"><div class="brain-card-head"><div class="brain-badge">${p.num}</div><div><strong>${escapeHtml(p.card.name)}</strong><small>${roleName(p.role)} · OVR ${cardOverall(p.card)}${human?' · 캡틴 / 훈련 때 AI':' · AI Agent'}</small></div><div class="brain-meta">${ai?`학습 ${p.brain.updates.toLocaleString()}회<br>득점 ${p.brain.goalsFor} · 실점 ${p.brain.goalsAgainst}`:'학습 대상 아님'}</div></div><div class="action-probs">${probsHtml}</div><div class="brain-footer"><span>최근 선택 · ${p.brain.lastAction===null?'기록 없음':labels[p.brain.lastAction]}</span><span>${p.brain.lastOutcome>0?'최근 득점 보상':p.brain.lastOutcome<0?'최근 실점 페널티':'보상 대기'}</span></div></div>`;
+}
+function renderAiLab(){
+ if(!$('blueBrains'))return;const ai=allPlayers();const updates=ai.reduce((v,p)=>v+p.brain.updates,0),gf=ai.reduce((v,p)=>v+p.brain.goalsFor,0),ga=ai.reduce((v,p)=>v+p.brain.goalsAgainst,0);goalBoosts=learningLogs.reduce((sum,e)=>sum+(Number(e.positive)||0),0);goalPenalties=learningLogs.reduce((sum,e)=>sum+(Number(e.negative)||0),0);
+ $('labUpdates').textContent=updates.toLocaleString();$('labGoalsFor').textContent=gf.toLocaleString();$('labGoalsAgainst').textContent=ga.toLocaleString();$('labBoosts').textContent=goalBoosts.toLocaleString();$('labPenalties').textContent=goalPenalties.toLocaleString();$('labAgents').textContent=ai.length;
+ $('blueBrains').innerHTML=blue.map(brainCardHtml).join('');$('redBrains').innerHTML=red.map(brainCardHtml).join('');
+ $('labStatus').textContent=matchActive?(training?'상태 · AI 훈련 중':'상태 · 실전 경기 중'):matchPaused?'상태 · 일시정지':matchKind==='trainingDone'?'상태 · 훈련 완료':matchKind==='finished'?'상태 · 경기 종료':'상태 · 대기 중';
+ $('trainingStatus').textContent=matchPaused&&training?`AI 훈련 일시정지 · ${formatClock(currentRemaining())} 남음 · 스코어 ${score[0]} : ${score[1]}`:matchActive&&training?`AI 훈련 진행 중 · ${formatClock(currentRemaining())} 남음 · 스코어 ${score[0]} : ${score[1]}`:matchKind==='trainingDone'?`마지막 훈련 종료 · 최종 스코어 ${score[0]} : ${score[1]} · 데이터 저장 완료`:matchActive?`실전 경기 진행 중 · ${formatClock(currentRemaining())} 남음`:'훈련 대기 중 · 학습 세션을 시작하면 모든 선수가 AI로 움직여.';
+ $('startTraining').disabled=matchActive||matchPaused;$('stopTraining').disabled=!(training&&(matchActive||matchPaused));$('startTraining').textContent=matchActive||matchPaused?'경기 진행 중':'AI 훈련 시작';$('resumeTraining').hidden=!(training&&matchPaused);$('resumeTraining').disabled=!(training&&matchPaused);
+ $('learningLog').innerHTML=learningLogs.length?learningLogs.slice(0,18).map(log=>{const dt=new Date(log.time);const stamp=`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}:${String(dt.getSeconds()).padStart(2,'0')}`;const tag=log.type==='goal'?(log.side==='blue'?'BLUE GOAL':'RED GOAL'):log.type==='training'?'TRAINING':'FULL TIME';let extra=log.detail||'';if(log.actions){const names={press:'압박',support:'지원',hold:'유지',cover:'커버',run:'침투'};const fmt=obj=>Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k,v])=>`${names[k]||k} ${v}회`).join(' · ')||'행동 기록 없음';extra+=` | 블루: ${fmt(log.actions.blue)} / 레드: ${fmt(log.actions.red)}`;}return `<div class="log-item"><div class="log-time">${stamp}</div><div class="log-copy"><strong>${escapeHtml(log.headline||'학습 이벤트')}</strong><small>${escapeHtml(extra)}</small></div><div class="log-tag">${tag}</div></div>`;}).join(''):'<div class="empty-log">아직 학습 기록이 없어. AI 훈련을 시작하거나 경기를 진행해 봐.</div>';
+}
+function setView(view){
+ if(view!=='match'){
+  document.body.classList.remove('immersive-match');
+  if(document.fullscreenElement&&document.exitFullscreen){const exit=document.exitFullscreen();if(exit&&exit.catch)exit.catch(()=>{});}
+ }else{document.body.classList.add('immersive-match');}
+ document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active',el.id===view));
+ document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+ if(view==='club'){renderClub();}
+ if(view==='packs'){$('recentCards').innerHTML=[...cards].sort((a,b)=>b.created-a.created).slice(0,4).map(c=>cardHtml(c,{actions:false})).join('');}
+ if(view==='lab')renderAiLab();
+ if(view==='home')renderHomeDashboard();
+ if(view==='match')setTimeout(()=>{fitGameCanvas();draw();},40);
+}
+function fitGameCanvas(){
+ if(!document.body.classList.contains('immersive-match'))return;
+ const dpr=Math.min(window.devicePixelRatio||1,2);
+ W=Math.max(320,window.innerWidth);H=Math.max(240,window.innerHeight);
+ canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);
+ canvas.style.width='100%';canvas.style.height='100%';
+ ctx.setTransform(dpr,0,0,dpr,0,0);
+ updateFieldView();
+}
+window.addEventListener('resize',fitGameCanvas);
+document.addEventListener('fullscreenchange',()=>setTimeout(fitGameCanvas,60));
+function openPack(){if(coins<300){toast('코인이 부족해. 경기에서 득점해 코인을 모아줘.');return;}coins-=300;const c=randomCard();cards.push(c);lastPulledId=c.id;saveClub();renderClub();$('revealedCard').innerHTML=cardHtml(c,{actions:false});$('revealOverlay').classList.add('show');toast('새 선수를 영입했어!');}
+function putInLineup(id){if(lineup.includes(id)){toast('이미 선발 명단에 있는 선수야.');return;}lineup[selectedSlot]=id;saveClub();applyLineup();renderClub();}
+function autoBest(){const next=[];for(let i=0;i<5;i++){const role=SLOT_ROLES[i],pool=cards.filter(c=>c.role===role&&!next.includes(c.id)).sort((a,b)=>cardOverall(b)-cardOverall(a));let c=pool[0];if(!c)c=cards.filter(c=>!next.includes(c.id)).sort((a,b)=>cardOverall(b)-cardOverall(a))[0];if(c)next.push(c.id);}if(next.length===5){lineup=next;saveClub();applyLineup();toast('포지션별 최고 능력치 선수로 편성했어.');}}
+
+
+// -----------------------------------------------------------------------------
+// PITCH 11 v1.2.0 — tactical AI decision upgrade
+// -----------------------------------------------------------------------------
+const CAREER_KEY='pitch11_career_v1_1';
+const TACTIC_INFO={
+ balanced:{name:'밸런스',desc:'공수 균형을 유지하며 상황에 맞춰 움직여.'},
+ highpress:{name:'전방 압박',desc:'전방 압박과 커버를 더 자주 선택해 빠르게 공을 되찾아.'},
+ possession:{name:'점유율 축구',desc:'패스 지원과 위치 유지를 우선해 공을 오래 소유해.'},
+ counter:{name:'역습',desc:'공을 되찾으면 침투 행동을 늘려 빠르게 전진해.'},
+ lowblock:{name:'수비 집중',desc:'수비 라인을 지키고 커버를 우선해 실점 위험을 낮춰.'}
+};
+const TRAIT_DEFS={
+ guardian:{label:'골문 수호자',desc:'골키퍼 수비·피지컬 +6',bonus:{DEF:6,PHY:3}},
+ wall:{label:'철벽 수비',desc:'수비·피지컬 +5',bonus:{DEF:5,PHY:4}},
+ interceptor:{label:'패스 차단',desc:'수비 +5 · 패스 +2',bonus:{DEF:5,PAS:2}},
+ conductor:{label:'경기 조율',desc:'패스 +6 · 피지컬 +2',bonus:{PAS:6,PHY:2}},
+ vision:{label:'킬 패스 비전',desc:'패스 +5 · 슈팅 +2',bonus:{PAS:5,SHO:2}},
+ finisher:{label:'킬러 피니시',desc:'슈팅 +6 · 피지컬 +2',bonus:{SHO:6,PHY:2}},
+ sprinter:{label:'폭풍 질주',desc:'속도 +6 · 피지컬 +2',bonus:{PAC:6,PHY:2}},
+ clinical:{label:'원터치 결정력',desc:'슈팅 +5 · 패스 +2',bonus:{SHO:5,PAS:2}}
+};
+const ROLE_TRAITS={GK:['guardian'],DEF:['wall','interceptor'],MID:['conductor','vision'],FWD:['finisher','sprinter','clinical']};
+const LEAGUE_TEMPLATE=[
+ {id:'pitch',name:'PITCH UNITED',short:'PITCH UTD',ovr:80,roster:['MY PLAYER','BLUE KEEPER','BLUE GUARD','BLUE LINK','BLUE ENGINE','BLUE STRIKER']},
+ {id:'north',name:'NORTH CITY',short:'NORTH CITY',ovr:78,roster:['N. Keeper','N. Wall','N. Anchor','N. Runner','N. Finisher']},
+ {id:'redhill',name:'REDHILL FC',short:'REDHILL',ovr:82,roster:['R. Keeper','R. Guard','R. Pivot','R. Ace','R. Arrow']},
+ {id:'comets',name:'BLUE COMETS',short:'COMETS',ovr:76,roster:['C. Keeper','C. Shield','C. Passer','C. Spark','C. Rocket']},
+ {id:'wolves',name:'IRON WOLVES',short:'WOLVES',ovr:85,roster:['I. Keeper','I. Stone','I. Block','I. Engine','I. Hunter']},
+ {id:'sky',name:'SKY ATHLETIC',short:'SKY ATH',ovr:80,roster:['S. Keeper','S. Back','S. Vision','S. Wing','S. Ace']},
+ {id:'river',name:'RIVER TOWN',short:'RIVER TOWN',ovr:74,roster:['T. Keeper','T. Guard','T. Mid','T. Runner','T. Shot']},
+ {id:'metro',name:'METRO FC',short:'METRO',ovr:83,roster:['M. Keeper','M. Stopper','M. Link','M. Tempo','M. Striker']}
+];
+function blankLeagueTeam(t){return{id:t.id,name:t.name,short:t.short,ovr:t.ovr,roster:t.roster,played:0,wins:0,draws:0,losses:0,gf:0,ga:0,points:0};}
+function freshCareer(){return{version:1,season:1,round:0,teams:LEAGUE_TEMPLATE.map(blankLeagueTeam),archive:[],tacticsPreset:'balanced',lastMVP:null,lastRatings:[],careerMatches:0};}
+function loadCareer(){try{const saved=JSON.parse(localStorage.getItem(CAREER_KEY)||'null');if(!saved||!Array.isArray(saved.teams)||saved.teams.length!==8)return freshCareer();const base=freshCareer();return{...base,...saved,teams:base.teams.map(t=>({...t,...(saved.teams.find(x=>x.id===t.id)||{})})),archive:Array.isArray(saved.archive)?saved.archive.slice(0,10):[],tacticsPreset:TACTIC_INFO[saved.tacticsPreset]?saved.tacticsPreset:'balanced'};}catch(e){return freshCareer();}}
+let career=loadCareer();
+let tacticsPreset=career.tacticsPreset||'balanced';
+let leagueMatchMode=false;
+let currentOpponent={id:'friendly',name:'CPU SELECT',short:'CPU SELECT',ovr:78,roster:['CPU KEEPER','CPU WALL','CPU LINK','CPU ENGINE','CPU STRIKER']};
+let activePlayerStats={};
+let lastPasserId=null,pendingPass=null,pendingAssistId=null;
+const baseSaveClub=saveClub;
+saveClub=function(){baseSaveClub();saveCareer();};
+function saveCareer(){career.tacticsPreset=tacticsPreset;try{localStorage.setItem(CAREER_KEY,JSON.stringify(career));}catch(e){setSaveStatus('커리어 저장 공간 확인 필요',true);}}
+const baseEnsureClub=ensureClub;
+ensureClub=function(){baseEnsureClub();cards.forEach(c=>{if(!Number.isFinite(c.rank))c.rank=1;if(!Number.isFinite(c.upgradeLevel))c.upgradeLevel=0;if(c.rarity==='legend'&&!c.legendTrait){const pool=ROLE_TRAITS[c.role]||['finisher'];c.legendTrait=pool[Math.floor(Math.random()*pool.length)];c.skill=TRAIT_DEFS[c.legendTrait].label;}});saveClub();};
+const baseExportBackup=exportBackup;
+exportBackup=function(){const payload={app:'PITCH11',version:APP_VERSION,exportedAt:new Date().toISOString(),club:{cards,lineup,coins},brains,learningLogs,matchHistory,settings:{difficulty},career};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`pitch11-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('선수단·AI 학습·시즌 리그를 포함해 백업했어.');};
+importBackup=async function(file){if(!file)return;try{if(file.size>5*1024*1024)throw new Error('백업 파일이 5MB를 넘었어.');const data=JSON.parse(await file.text());if(data.app!=='PITCH11'||!data.club||!Array.isArray(data.club.cards)||!Array.isArray(data.club.lineup))throw new Error('PITCH 11 백업 파일이 아니야.');if(data.club.cards.length<5||data.club.cards.length>500||data.club.lineup.length!==5)throw new Error('선수 데이터 형식이 올바르지 않아.');const seen=new Set(),cleanCards=data.club.cards.filter(c=>c&&typeof c.id==='string'&&c.id.length<100&&typeof c.name==='string'&&c.name.length<60&&['GK','DEF','MID','FWD'].includes(c.role)&&['PAC','SHO','PAS','DEF','PHY'].every(k=>Number.isFinite(Number(c[k])))).filter(c=>{if(seen.has(c.id))return false;seen.add(c.id);return true;}).map(c=>({...c,name:c.name.slice(0,40),skill:String(c.skill||'팀 플레이').slice(0,50),rarity:['common','rare','epic','legend'].includes(c.rarity)?c.rarity:'common',rank:clamp(Math.round(Number(c.rank)||1),1,5),upgradeLevel:clamp(Math.round(Number(c.upgradeLevel)||0),0,5),...Object.fromEntries(['PAC','SHO','PAS','DEF','PHY'].map(k=>[k,clamp(Math.round(Number(c[k])),1,99)]))}));if(cleanCards.length<5)throw new Error('유효한 선수 카드가 충분하지 않아.');const validIds=new Set(cleanCards.map(c=>c.id)),cleanLineup=data.club.lineup.slice(0,5);if(cleanLineup.length!==5||new Set(cleanLineup).size!==5||cleanLineup.some(id=>!validIds.has(id)))throw new Error('선발 명단 데이터가 올바르지 않아.');if(!confirm('현재 저장 데이터를 백업 파일 내용으로 교체할까?'))return;const cleanCareer=data.career&&Array.isArray(data.career.teams)&&data.career.teams.length===8?data.career:freshCareer();localStorage.setItem(SAVE_KEY,JSON.stringify({cards:cleanCards,lineup:cleanLineup,coins:clamp(Math.round(Number(data.club.coins)||0),0,9999999)}));localStorage.setItem(BRAIN_KEY,JSON.stringify(data.brains&&typeof data.brains==='object'?data.brains:{}));localStorage.setItem(LOG_KEY,JSON.stringify(Array.isArray(data.learningLogs)?data.learningLogs.slice(0,100):[]));localStorage.setItem(HISTORY_KEY,JSON.stringify(Array.isArray(data.matchHistory)?data.matchHistory.slice(0,30):[]));localStorage.setItem(SETTINGS_KEY,JSON.stringify(data.settings||{difficulty:'normal'}));localStorage.setItem(CAREER_KEY,JSON.stringify(cleanCareer));toast('백업을 불러왔어. 게임을 다시 시작할게.');setTimeout(()=>location.reload(),450);}catch(e){toast(e.message||'백업 파일을 불러오지 못했어.');}finally{$('importSaveFile').value='';}};
+function normalizeProgress(){for(const c of cards){c.rank=clamp(Math.round(Number(c.rank)||1),1,5);c.upgradeLevel=clamp(Math.round(Number(c.upgradeLevel)||0),0,5);if(c.rarity==='legend'&&!c.legendTrait){const pool=ROLE_TRAITS[c.role]||['finisher'];c.legendTrait=pool[Math.floor(Math.random()*pool.length)];c.skill=TRAIT_DEFS[c.legendTrait].label;}}}
+function stableHash(s){let h=2166136261;for(let i=0;i<String(s).length;i++){h^=String(s).charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function portraitSvg(c){const h=stableHash(c.id||c.name),skins=['#f4c9a6','#dba77e','#f0c19b','#bc805e','#e8b994','#9f684f'],hair=['#1b1b25','#30251e','#5e3828','#101820','#684a32','#252a38'],jerseys=['#1b8fe1','#d64b56','#42a68a','#805ac4','#bf8c35','#334b74'];const skin=skins[h%skins.length],hairColor=hair[(h>>>4)%hair.length],jersey=jerseys[(h>>>8)%jerseys.length],style=(h>>>12)%4,eye=(h>>>16)%2?'#263b50':'#35251f';let hairPath=['M34 51 Q30 19 59 17 Q91 18 86 53 L78 42 Q61 30 42 45 Z','M33 48 Q34 15 62 17 Q88 18 87 50 Q75 35 58 38 Q44 38 33 48Z','M36 45 Q33 24 49 18 Q72 10 85 31 L88 48 Q69 36 57 40 Q45 40 36 45Z','M33 50 Q29 20 58 15 Q88 15 88 48 L80 38 Q61 32 44 43Z'][style];return `<svg class="card-portrait" viewBox="0 0 120 140" role="img" aria-label="${escapeHtml(c.name)} 선수 일러스트"><defs><linearGradient id="bg${h}" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff55"/><stop offset="1" stop-color="#07152299"/></linearGradient></defs><circle cx="60" cy="65" r="54" fill="url(#bg${h})"/><path d="M15 139 Q18 92 60 91 Q104 92 106 139Z" fill="${jersey}" stroke="#ffffff88" stroke-width="2"/><path d="M47 91 L60 110 L73 91" fill="none" stroke="#ffffff99" stroke-width="3"/><rect x="51" y="77" width="18" height="22" rx="8" fill="${skin}"/><ellipse cx="60" cy="55" rx="27" ry="33" fill="${skin}" stroke="#754c3c" stroke-width="1.3"/><path d="${hairPath}" fill="${hairColor}"/><path d="M39 53 Q45 47 51 52 M69 52 Q76 47 82 52" fill="none" stroke="${hairColor}" stroke-width="3" stroke-linecap="round"/><ellipse cx="49" cy="59" rx="3" ry="2.4" fill="${eye}"/><ellipse cx="71" cy="59" rx="3" ry="2.4" fill="${eye}"/><path d="M60 61 L57 71 L62 72" fill="none" stroke="#9d654f" stroke-width="1.5" stroke-linecap="round"/><path d="M51 80 Q60 85 69 80" fill="none" stroke="#914f4b" stroke-width="2" stroke-linecap="round"/><path d="M34 139 Q39 109 60 108 Q81 109 86 139" fill="none" stroke="#ffffff35" stroke-width="2"/><circle cx="60" cy="55" r="31" fill="none" stroke="#ffffff25"/></svg>`;}
+function rarityLabel(r){return({common:'NORMAL',rare:'RARE',epic:'EPIC',legend:'LEGEND'})[r]||'NORMAL';}
+const baseCardOverall=cardOverall;
+cardOverall=function(c){return Math.round(['PAC','SHO','PAS','DEF','PHY'].reduce((s,k)=>s+(Number(c?.[k])||0),0)/5);};
+const baseStat=stat;
+stat=function(p,key){let v=baseStat(p,key);const t=TRAIT_DEFS[p?.card?.legendTrait];if(t&&t.bonus[key])v=Math.min(99,v+t.bonus[key]);return v;};
+const baseRandomCard=randomCard;
+randomCard=function(){const c=baseRandomCard();c.rank=1;c.upgradeLevel=0;if(c.rarity==='legend'){const pool=ROLE_TRAITS[c.role]||['finisher'];c.legendTrait=pool[Math.floor(Math.random()*pool.length)];c.skill=TRAIT_DEFS[c.legendTrait].label;}return c;};
+cardHtml=function(c,opts={}){const equipped=lineup.includes(c.id),isCurrent=opts.isCurrent||false,rank=clamp(Number(c.rank)||1,1,5),level=clamp(Number(c.upgradeLevel)||0,0,5),trait=c.rarity==='legend'&&c.legendTrait&&TRAIT_DEFS[c.legendTrait]?TRAIT_DEFS[c.legendTrait]:null,actions=opts.actions===false?'':`<div class="card-actions"><button class="${equipped?'equipped':''}" data-equip="${escapeHtml(c.id)}" ${equipped?'disabled':''}>${isCurrent?'편성 중':equipped?'선발 편성 중':'선발 배치'}</button><button data-upgrade="${escapeHtml(c.id)}" ${level>=5?'disabled':''}>훈련 Lv.${level} · ${120*(level+1)}🪙</button><button data-rankup="${escapeHtml(c.id)}" ${rank>=5&&c.rarity==='legend'?'disabled':''}>${rank>=5?'등급 승급':'★ '+rank+' → '+(rank+1)} · ${rank>=5?1200:350*rank}🪙</button></div>`;return `<div class="player-card ${c.rarity||'common'}" data-id="${escapeHtml(c.id)}"><div class="card-top"><div><div class="ovr">${cardOverall(c)} <small>OVR</small></div><div class="position">${c.role}</div></div><div class="rarity">${rarityLabel(c.rarity)}</div></div><div class="card-mid">${portraitSvg(c)}<strong>${escapeHtml(c.name)}</strong><small>${roleName(c.role)} · ${escapeHtml(c.skill||'팀 플레이')}</small><div class="card-honors"><span>★ ${rank}</span><span>훈련 Lv.${level}</span>${trait?`<span class="trait">✦ ${escapeHtml(trait.label)}</span>`:''}</div></div><div class="card-stats"><div><b>${c.PAC}</b><small>PAC</small></div><div><b>${c.SHO}</b><small>SHO</small></div><div><b>${c.PAS}</b><small>PAS</small></div><div><b>${c.DEF}</b><small>DEF</small></div><div><b>${c.PHY}</b><small>PHY</small></div><div><b>${cardOverall(c)}</b><small>OVR</small></div></div>${actions}</div>`;};
+function upgradeCard(id){const c=cards.find(x=>x.id===id);if(!c)return;const lv=clamp(Number(c.upgradeLevel)||0,0,5);if(lv>=5){toast('이 선수의 훈련 레벨은 최대야.');return;}const cost=120*(lv+1);if(coins<cost){toast(`코인이 부족해. 훈련에는 ${cost}코인이 필요해.`);return;}const key=({GK:'DEF',DEF:'DEF',MID:'PAS',FWD:'SHO'})[c.role]||'PAC';if(c[key]>=99){toast('주요 능력치가 이미 최대야.');return;}coins-=cost;c[key]=Math.min(99,c[key]+2);c.upgradeLevel=lv+1;c.ovr=cardOverall(c);saveClub();applyLineup();renderClub();renderCollection();toast(`${c.name} 훈련 완료 · ${key} +2`);}
+function rankUpCard(id){const c=cards.find(x=>x.id===id);if(!c)return;const rank=clamp(Number(c.rank)||1,1,5),promotion=rank>=5,cost=promotion?1200:350*rank;if(promotion&&c.rarity==='legend'){toast('전설 등급의 최대 단계야.');return;}if(coins<cost){toast(`코인이 부족해. 승급에는 ${cost}코인이 필요해.`);return;}coins-=cost;['PAC','SHO','PAS','DEF','PHY'].forEach(k=>c[k]=Math.min(99,c[k]+(promotion?2:1)));if(promotion){const tiers=['common','rare','epic','legend'],idx=tiers.indexOf(c.rarity);c.rarity=tiers[Math.min(tiers.length-1,idx+1)];c.rank=1;if(c.rarity==='legend'){const pool=ROLE_TRAITS[c.role]||['finisher'];c.legendTrait=pool[Math.floor(Math.random()*pool.length)];c.skill=TRAIT_DEFS[c.legendTrait].label;}}else c.rank=rank+1;c.ovr=cardOverall(c);saveClub();applyLineup();renderClub();renderCollection();toast(promotion?`${c.name} 등급 승급! ${rarityLabel(c.rarity)}`:`${c.name} 별 등급 상승! ★${c.rank}`);}
+const baseRenderClub=renderClub;
+renderClub=function(){baseRenderClub();const t=$('tacticsPreset');if(t)t.value=tacticsPreset;const d=$('tacticsDescription');if(d)d.textContent=TACTIC_INFO[tacticsPreset]?.desc||TACTIC_INFO.balanced.desc;};
+const baseProbs=probs;
+probs=function(p,s,nearest){const base=baseProbs(p,s,nearest);if(p.side!=='blue'||tacticsPreset==='balanced')return base;const weights={balanced:[1,1,1,1,1],highpress:[1.65,1.0,.92,1.25,.9],possession:[.82,1.55,1.25,.92,.88],counter:[.9,1.02,.9,1.18,1.62],lowblock:[.83,.82,1.2,1.7,.72]}[tacticsPreset]||[1,1,1,1,1];const weighted=base.map((v,i)=>v*weights[i]),sum=weighted.reduce((a,b)=>a+b,0)||1;return weighted.map(v=>v/sum);};
+function setTacticsPreset(value){tacticsPreset=TACTIC_INFO[value]?value:'balanced';career.tacticsPreset=tacticsPreset;saveCareer();if($('tacticsPreset'))$('tacticsPreset').value=tacticsPreset;if($('tacticsDescription'))$('tacticsDescription').textContent=TACTIC_INFO[tacticsPreset].desc;renderAiLab();toast(`AI 전술 변경 · ${TACTIC_INFO[tacticsPreset].name}`);}
+function buildLeagueFixture(round){let circle=[0,1,2,3,4,5,6,7];for(let r=0;r<(round%7);r++){const fixed=circle[0],tail=circle.slice(1),last=tail.pop();tail.unshift(last);circle=[fixed,...tail];}const pairs=[[circle[0],circle[7]],[circle[1],circle[6]],[circle[2],circle[5]],[circle[3],circle[4]]],userPair=pairs.find(pair=>pair.includes(0)),opponentIndex=userPair[0]===0?userPair[1]:userPair[0],otherPairs=pairs.filter(pair=>pair!==userPair).map(pair=>pair.slice());return{opponent:career.teams[opponentIndex],otherPairs};}
+function updateLeagueRow(team,forGoals,againstGoals){team.played++;team.gf+=forGoals;team.ga+=againstGoals;if(forGoals>againstGoals){team.wins++;team.points+=3;}else if(forGoals===againstGoals){team.draws++;team.points++;}else team.losses++;}
+function recordLeagueRound(userScore){const fixture=buildLeagueFixture(career.round);const userTeam=career.teams.find(t=>t.id==='pitch'),opponent=fixture.opponent;updateLeagueRow(userTeam,userScore[0],userScore[1]);updateLeagueRow(opponent,userScore[1],userScore[0]);const simulated=[];for(const pair of fixture.otherPairs){const a=career.teams[pair[0]],b=career.teams[pair[1]],ga=Math.floor(Math.random()*4),gb=Math.floor(Math.random()*4);updateLeagueRow(a,ga,gb);updateLeagueRow(b,gb,ga);simulated.push({home:a.name,away:b.name,score:[ga,gb]});}career.round++;let seasonAward=null;if(career.round>=7){const sorted=sortedLeagueTeams(),champion=sorted[0];seasonAward={season:career.season,champion:champion.name,standings:sorted.map(t=>({name:t.name,points:t.points,wins:t.wins,draws:t.draws,losses:t.losses,gf:t.gf,ga:t.ga}))};career.archive.unshift(seasonAward);career.archive=career.archive.slice(0,10);const reward=champion.id==='pitch'?600:0;if(reward){coins+=reward;toast('시즌 우승! 챔피언 보상 +600 코인!');}else toast(`${champion.name} 시즌 우승 · 다음 시즌이 시작돼.`);career.season++;career.round=0;career.teams=LEAGUE_TEMPLATE.map(blankLeagueTeam);career.lastChampion=seasonAward;}saveCareer();saveClub();return{fixture,simulated,seasonAward};}
+function sortedLeagueTeams(){return career.teams.slice().sort((a,b)=>b.points-a.points||((b.gf-b.ga)-(a.gf-a.ga))||b.gf-a.gf||b.wins-a.wins);}
+function renderLeague(){const me=career.teams.find(t=>t.id==='pitch');if(me)me.ovr=teamOverall();const teams=sortedLeagueTeams(),fixture=buildLeagueFixture(career.round),rank=teams.findIndex(t=>t.id==='pitch')+1;if($('leagueSeasonLabel'))$('leagueSeasonLabel').textContent=`SEASON ${String(career.season).padStart(2,'0')} · ROUND ${Math.min(7,career.round+1)}/7`;$('leagueRoundChip').textContent=`ROUND ${Math.min(7,career.round+1)} / 7`;$('leagueNextOpponent').textContent=`다음 상대 · ${fixture.opponent.name}`;$('leagueFixtureInfo').textContent=`시즌 ${career.season} · ${career.round}/7 라운드 완료 · 현재 ${rank}위 · 상대 팀 OVR ${fixture.opponent.ovr}`;$('leagueClubOvr').textContent=`CLUB OVR ${teamOverall()}`;$('lastChampion').textContent=career.lastChampion?.champion||'아직 우승 기록이 없어';$('lastChampionInfo').textContent=career.lastChampion?`시즌 ${career.lastChampion.season} 우승 · ${career.lastChampion.standings[0]?.points??0} 승점`:'첫 시즌을 완주하면 우승 기록과 시즌 보상을 획득할 수 있어.';$('leagueStandings').innerHTML=teams.map((t,i)=>`<tr class="${t.id==='pitch'?'user-team':''}"><td class="rank-number">${i+1}</td><td>${escapeHtml(t.name)}${t.id==='pitch'?' ★':''}</td><td>${t.played}</td><td>${t.wins}</td><td>${t.draws}</td><td>${t.losses}</td><td>${t.gf-t.ga>0?'+':''}${t.gf-t.ga}</td><td><b>${t.points}</b></td></tr>`).join('');const history=matchHistory.filter(m=>m.competition==='league').slice(0,8);$('leagueRecent').innerHTML=history.length?history.map(m=>`<div class="league-result"><div><b>SEASON ${m.season||'-'}</b><small>${new Date(m.time).toLocaleDateString('ko-KR')}</small></div><div><b>PITCH UNITED vs ${escapeHtml(m.opponent||'CPU SELECT')}</b><small>${escapeHtml(m.mvp?.name||'MVP 미기록')} · 평점 ${m.mvp?.rating??'-'}</small></div><div class="league-score">${m.score?.[0]??0} : ${m.score?.[1]??0}</div></div>`).join(''):'<div class="empty-league">아직 리그 경기가 없어. 다음 리그 경기를 시작해 봐!</div>';}
+const baseSetView=setView;
+setView=function(view){baseSetView(view);if(view==='league')renderLeague();};
+const baseStatEvent=statEvent;
+function ensureActiveRecord(p){if(!p||!activePlayerStats)return null;if(!activePlayerStats[p.id])activePlayerStats[p.id]={id:p.id,name:p.card?.name||p.id,side:p.side,role:p.role,ovr:cardOverall(p.card||userCard()),goals:0,assists:0,shots:0,passes:0,completedPasses:0,receivedPasses:0,tackles:0};return activePlayerStats[p.id];}
+function recordPlayerStat(p,key,n=1){const r=ensureActiveRecord(p);if(r&&key in r)r[key]+=n;}
+const baseKick=kick;
+kick=function(p,target,power,kind='pass'){if(kind==='shot'){recordPlayerStat(p,'shots');pendingAssistId=lastPasserId;pendingPass=null;lastPasserId=null;}else{recordPlayerStat(p,'passes');lastPasserId=p?.id||null;pendingPass={id:p?.id,side:p?.side,tick};}return baseKick(p,target,power,kind);};
+const baseUserKick=userKick;
+userKick=function(shot){const carrier=selected&&owner===selected?selected:null;if(carrier&&shot){recordPlayerStat(carrier,'shots');pendingAssistId=lastPasserId;pendingPass=null;lastPasserId=null;}return baseUserKick(shot);};
+const baseAcquireBall=acquireBall;
+acquireBall=function(){const was=owner;baseAcquireBall();if(!was&&owner){if(pendingPass&&pendingPass.side===owner.side&&pendingPass.id!==owner.id&&tick-pendingPass.tick<90){const passer=allPlayers().find(p=>p.id===pendingPass.id);if(passer){recordPlayerStat(passer,'completedPasses');recordPlayerStat(owner,'receivedPasses');}}if(pendingPass&&pendingPass.side!==owner.side)lastPasserId=null;pendingPass=null;}};
+const baseOnGoal=onGoal;
+onGoal=function(side){const scorer=lastTouch&&lastTouch.side===side?lastTouch:null;if(scorer){recordPlayerStat(scorer,'goals');if(pendingAssistId&&pendingAssistId!==scorer.id){const assister=allPlayers().find(p=>p.id===pendingAssistId);if(assister&&assister.side===side)recordPlayerStat(assister,'assists');}}pendingAssistId=null;lastPasserId=null;pendingPass=null;return baseOnGoal(side);};
+const baseStep=step;
+step=function(){const before=owner;baseStep();if(before&&owner&&before!==owner)recordPlayerStat(owner,'tackles');};
+function matchRatings(){return allPlayers().map(p=>{const r=ensureActiveRecord(p)||{},ovr=Number(r.ovr)||cardOverall(p.card),raw=6.0+(ovr-75)*.035+(r.goals||0)*1.25+(r.assists||0)*.85+(r.completedPasses||0)*.045+(r.tackles||0)*.12+(r.receivedPasses||0)*.015-(r.shots||0)*.025;return{...r,name:p.card.name,role:p.role,side:p.side,ovr,rating:Math.round(clamp(raw,4.5,10)*10)/10};}).sort((a,b)=>b.rating-a.rating||(b.goals-a.goals)||(b.assists-a.assists));}
+const baseFinishMatch=finishMatch;
+finishMatch=function(){const ratings=matchRatings(),mvp=ratings[0]||null,scoreCopy=score.slice(),duration=matchDuration,wasLeague=leagueMatchMode,opponent=currentOpponent;const baseResult=baseFinishMatch();const rec=matchHistory[0];if(rec){rec.opponent=opponent.name;rec.competition=wasLeague?'league':'friendly';rec.season=wasLeague?career.season:null;rec.round=wasLeague?career.round+1:null;rec.ratings=ratings;rec.mvp=mvp;}const verdictTitle=scoreCopy[0]===scoreCopy[1]?'무승부':scoreCopy[0]>scoreCopy[1]?'PITCH UNITED 승리':`${opponent.name} 승리`;const verdictNode=$('resultPanel').querySelector('.result-head strong');if(verdictNode)verdictNode.textContent=verdictTitle;
+ if(wasLeague){const tableResult=recordLeagueRound(scoreCopy);if(rec){rec.season=tableResult.seasonAward?.season||career.season-(tableResult.seasonAward?1:0);rec.round=tableResult.seasonAward?7:Math.max(1,career.round);rec.opponent=tableResult.fixture.opponent.name;rec.leagueResult={simulated:tableResult.simulated,seasonAward:tableResult.seasonAward};}}
+ career.careerMatches=(career.careerMatches||0)+1;career.lastMVP=mvp;career.lastRatings=ratings.slice(0,11);career.lastMatch={score:scoreCopy,opponent:opponent.name,competition:wasLeague?'league':'friendly',time:Date.now(),mvp};saveCareer();saveMatchHistory();saveClub();
+ const mvpHtml=mvp?`<div class="mvp-strip"><div class="mvp-icon">🏅</div><div><div class="eyebrow">MATCH MVP · ${mvp.side==='blue'?'PITCH UNITED':'CPU SELECT'}</div><h3>${escapeHtml(mvp.name)}</h3><p>${escapeHtml(roleName(mvp.role))} · 득점 ${mvp.goals} · 도움 ${mvp.assists} · 패스 ${mvp.completedPasses} · 태클 ${mvp.tackles}</p></div><div class="mvp-rating">${mvp.rating.toFixed(1)}</div></div>`:'';
+ const ratingHtml=`<div class="result-kicker">PLAYER RATINGS · 11 PLAYERS</div><div class="rating-list">${ratings.map((r,i)=>`<div class="rating-row ${r.id==='user_avatar'?'user-rating':''}"><span class="rating-num">${i+1}</span><b>${escapeHtml(r.name)}</b><strong>${r.rating.toFixed(1)}</strong></div>`).join('')}</div>`;
+ const leagueHtml=wasLeague?`<div class="goal-timeline"><strong>리그 반영</strong><span>시즌 ${rec?.season||career.season} · ${rec?.round||career.round}라운드 · ${escapeHtml(opponent.name)}와의 결과가 순위표에 반영됐어.</span></div>`:'';
+ const actions=$('resultPanel').querySelector('.result-actions');if(actions)actions.insertAdjacentHTML('beforebegin',mvpHtml+ratingHtml+leagueHtml);renderLeague();renderHomeDashboard();leagueMatchMode=false;return baseResult;};
+const basePrepareSession=prepareSession;
+prepareSession=function(kind,duration){if(kind==='match'){leagueMatchMode=$('matchCompetition')?.value==='league';const fixture=buildLeagueFixture(career.round);currentOpponent=leagueMatchMode?fixture.opponent:{id:'friendly',name:'CPU SELECT',short:'CPU SELECT',ovr:79,roster:['CPU KEEPER','CPU WALL','CPU LINK','CPU ENGINE','CPU STRIKER']};}const ok=basePrepareSession(kind,duration);if(ok){if(kind==='match'){red.forEach((p,i)=>{p.card=redCard(i,p.role);});const fixtureEl=document.querySelector('#match .pitch-head .fixture');if(fixtureEl)fixtureEl.innerHTML=`PITCH UNITED <span style="color:#7abfff">🔵</span> <span style="color:#aab8c5">vs</span> <span style="color:#ff858c">🔴 ${escapeHtml(currentOpponent.short||currentOpponent.name)}</span>`;}activePlayerStats={};allPlayers().forEach(ensureActiveRecord);lastPasserId=null;pendingPass=null;pendingAssistId=null;}return ok;};
+const baseRedCard=redCard;
+redCard=function(i,role){const base=baseRedCard(i,role),opp=currentOpponent||{ovr:78,roster:[]},difficultyFactor=({easy:.91,normal:1,hard:1.09}[difficulty]||1),factor=clamp((Number(opp.ovr)||78)/78,0.86,1.17)*difficultyFactor;const keys=['PAC','SHO','PAS','DEF','PHY'];keys.forEach(k=>base[k]=clamp(Math.round(base[k]*factor),25,99));base.name=opp.roster?.[i]||base.name;base.ovr=Math.round(keys.reduce((s,k)=>s+base[k],0)/5);base.skill=opp.name||'CPU TACTIC';return base;};
+const baseStartMatch=startMatch;
+startMatch=function(){return baseStartMatch();};
+const baseUpdateHUD=updateHUD;
+updateHUD=function(){baseUpdateHUD();if(matchKind==='match'&&leagueMatchMode)$('matchMode').textContent='모드 · 시즌 리그';};
+function upgradeLeagueHome(){if($('matchCompetition'))$('matchCompetition').value='friendly';renderLeague();}
+// New event handlers. Existing handlers remain and all of these actions are delegated safely.
+$('collection').addEventListener('click',e=>{const up=e.target.closest('[data-upgrade]');if(up){upgradeCard(up.dataset.upgrade);return;}const rank=e.target.closest('[data-rankup]');if(rank){rankUpCard(rank.dataset.rankup);return;}});
+$('tacticsPreset').addEventListener('change',e=>setTacticsPreset(e.target.value));
+$('leaguePlay').addEventListener('click',()=>{if(matchActive||matchPaused){toast('진행 중인 세션을 먼저 종료해 줘.');return;}if($('matchCompetition'))$('matchCompetition').value='league';$('matchDuration').value=$('matchDuration').value||'180';startMatch();});
+// Make the selected rival visible in the match intro even when starting from the League tab.
+const baseLeagueRender=renderLeague;
+renderLeague=function(){baseLeagueRender();};
+normalizeProgress();
+
+// -----------------------------------------------------------------------------
+// PITCH 11 AI 3.0 — coordinated multi-agent learning, predictive tactics,
+// prioritized replay, opponent adaptation, self-play and accelerated training.
+// -----------------------------------------------------------------------------
+const AI3_VERSION='3.0.0';
+const AI3_TEAM_KEY='pitch11_ai3_team_brains_v1';
+const AI3_REPLAY_KEY='pitch11_ai3_replay_v1';
+const AI3_OPPONENT_KEY='pitch11_ai3_opponent_models_v1';
+const AI3_INPUTS=20,AI3_HIDDEN=14,AI3_ACTIONS=5,AI3_GAMMA=.91,AI3_LR=.0022;
+const AI3_TRAIN_MULTIPLIER=6;
+const AI3_SCENARIOS=[
+ {tactic:'highpress',label:'전방 압박'},
+ {tactic:'counter',label:'빠른 역습'},
+ {tactic:'lowblock',label:'수비 블록'},
+ {tactic:'possession',label:'점유율 축구'},
+ {tactic:'balanced',label:'밸런스'},
+ {tactic:'highpress',label:'강한 압박'}
+];
+function ai3FreshTeamBrain(side){
+ let seed=(stableHash('PITCH11_AI3_'+side)||123456789)>>>0;
+ const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ const scale1=Math.sqrt(2/AI3_INPUTS),scale2=Math.sqrt(2/AI3_HIDDEN);
+ return {version:1,w1:Array.from({length:AI3_INPUTS*AI3_HIDDEN},()=>((rnd()*2)-1)*scale1),b1:Array(AI3_HIDDEN).fill(0),w2:Array.from({length:AI3_HIDDEN*AI3_ACTIONS},()=>((rnd()*2)-1)*scale2),b2:Array(AI3_ACTIONS).fill(0),critic:{},updates:0,criticUpdates:0,replayUpdates:0,pending:0,scenarios:0};
+}
+function ai3NormalizeTeamBrain(raw,side){
+ const fresh=ai3FreshTeamBrain(side);if(!raw||typeof raw!=='object')return fresh;
+ const valid=(a,n)=>Array.isArray(a)&&a.length===n&&a.every(Number.isFinite);
+ if(!valid(raw.w1,AI3_INPUTS*AI3_HIDDEN)||!valid(raw.b1,AI3_HIDDEN)||!valid(raw.w2,AI3_HIDDEN*AI3_ACTIONS)||!valid(raw.b2,AI3_ACTIONS))return fresh;
+ return {...fresh,...raw,critic:raw.critic&&typeof raw.critic==='object'?raw.critic:{},updates:Math.max(0,Number(raw.updates)||0),criticUpdates:Math.max(0,Number(raw.criticUpdates)||0),replayUpdates:Math.max(0,Number(raw.replayUpdates)||0),pending:Math.max(0,Number(raw.pending)||0),scenarios:Math.max(0,Number(raw.scenarios)||0)};
+}
+let ai3StoredTeams={},ai3StoredReplay={},ai3StoredOpponents={};
+try{ai3StoredTeams=JSON.parse(localStorage.getItem(AI3_TEAM_KEY)||'{}')||{};}catch(e){}
+try{ai3StoredReplay=JSON.parse(localStorage.getItem(AI3_REPLAY_KEY)||'{}')||{};}catch(e){}
+try{ai3StoredOpponents=JSON.parse(localStorage.getItem(AI3_OPPONENT_KEY)||'{}')||{};}catch(e){}
+let ai3TeamBrains={blue:ai3NormalizeTeamBrain(ai3StoredTeams.blue,'blue'),red:ai3NormalizeTeamBrain(ai3StoredTeams.red,'red')};
+let ai3ReplayBuffers={blue:Array.isArray(ai3StoredReplay.blue)?ai3StoredReplay.blue.slice(-360):[],red:Array.isArray(ai3StoredReplay.red)?ai3StoredReplay.red.slice(-360):[]};
+const ai3FreshOpponent=()=>({samples:0,passes:0,shots:0,forwardPasses:0,leftPasses:0,rightPasses:0,widePasses:0,dribbles:0});
+let ai3OpponentModels={blue:{...ai3FreshOpponent(),...(ai3StoredOpponents.blue||{})},red:{...ai3FreshOpponent(),...(ai3StoredOpponents.red||{})}};
+let ai3TrainingFrames=0,ai3TrainingRealStart=0,ai3ScenarioIndex=0,ai3LastScenario=-1,ai3ReplaySampleCount=0,ai3TeamRewardCount=0,ai3OpponentObservations=0,ai3LastSave=0,ai3PausedSimFrames=0,ai3LastTrainingSim=0,ai3LastTrainingReal=0,ai3LastTrainingScenario='대기';
+let ai3LastPass=null;
+function ai3CleanExperience(e){if(!e||!Array.isArray(e.f)||!Array.isArray(e.n)||e.f.length!==AI3_INPUTS||e.n.length!==AI3_INPUTS||!Number.isFinite(Number(e.a))||!Number.isFinite(Number(e.r)))return null;const f=e.f.map(Number),n=e.n.map(Number);if(f.concat(n).some(v=>!Number.isFinite(v)))return null;return{f,n,a:clamp(Math.round(Number(e.a)),0,AI3_ACTIONS-1),r:clamp(Number(e.r),-3,3),done:!!e.done,priority:clamp(Number(e.priority)||.05,.025,10),agent:String(e.agent||'').slice(0,80)};}
+ai3ReplayBuffers.blue=ai3ReplayBuffers.blue.map(ai3CleanExperience).filter(Boolean).slice(-360);
+ai3ReplayBuffers.red=ai3ReplayBuffers.red.map(ai3CleanExperience).filter(Boolean).slice(-360);
+for(const side of ['blue','red']){for(const k of ['samples','passes','shots','forwardPasses','leftPasses','rightPasses','widePasses','dribbles'])ai3OpponentModels[side][k]=Math.max(0,Number(ai3OpponentModels[side][k])||0);}
+function ai3SaveAll(){
+ try{
+  localStorage.setItem(AI3_TEAM_KEY,JSON.stringify(ai3TeamBrains));
+  localStorage.setItem(AI3_REPLAY_KEY,JSON.stringify(ai3ReplayBuffers));
+  localStorage.setItem(AI3_OPPONENT_KEY,JSON.stringify(ai3OpponentModels));
+ }catch(e){
+  ai3ReplayBuffers.blue=ai3ReplayBuffers.blue.slice(-140);ai3ReplayBuffers.red=ai3ReplayBuffers.red.slice(-140);
+  try{localStorage.setItem(AI3_REPLAY_KEY,JSON.stringify(ai3ReplayBuffers));localStorage.setItem(AI3_TEAM_KEY,JSON.stringify(ai3TeamBrains));localStorage.setItem(AI3_OPPONENT_KEY,JSON.stringify(ai3OpponentModels));setSaveStatus('AI 학습 데이터 자동 압축 저장',false);}catch(e2){setSaveStatus('AI 데이터 저장 공간 부족 · 백업 필요',true);}
+ }
+}
+const ai3PriorSaveBrains=saveBrains;
+saveBrains=function(){ai3PriorSaveBrains();ai3SaveAll();};
+function ai3Forward(side,features){
+ const net=ai3TeamBrains[side],hidden=new Array(AI3_HIDDEN);
+ for(let h=0;h<AI3_HIDDEN;h++){let z=net.b1[h];for(let i=0;i<AI3_INPUTS;i++)z+=net.w1[i*AI3_HIDDEN+h]*(features[i]||0);hidden[h]=Math.tanh(z);}
+ const out=new Array(AI3_ACTIONS);for(let a=0;a<AI3_ACTIONS;a++){let z=net.b2[a];for(let h=0;h<AI3_HIDDEN;h++)z+=net.w2[h*AI3_ACTIONS+a]*hidden[h];out[a]=clamp(z,-4,4);}
+ return {out,hidden};
+}
+function ai3TeamTacticCode(side){const t=typeof teamTactic==='function'?teamTactic({side,role:'MID'}):teamTacticRaw(side);return({lowblock:-1,balanced:0,possession:.25,counter:.55,highpress:1})[t]||0;}
+function teamTacticRaw(side){if(side==='blue')return tacticsPreset;return difficulty==='hard'?'highpress':'balanced';}
+function ai3Features(p){
+ const mates=teamOf(p.side),opponents=oppOf(p),sg=sign(p),nearest=nearestToBall(mates),myScore=score[p.side==='blue'?0:1],theirScore=score[p.side==='blue'?1:0];
+ const pressure=opponents.length?Math.min(...opponents.map(o=>dist(o,p))):400;
+ const support=mates.filter(m=>m!==p&&dist(m,p)<360&&((m.x-p.x)*sg)>-80).length;
+ const freeSpace=opponents.length?Math.min(...opponents.map(o=>dist(o,p))):400;
+ const enemyGoalPoint={x:enemyGoal(p),y:0},ownGoalPoint={x:ownGoal(p),y:0};
+ const ownPoss=owner?(owner.side===p.side?1:-1):0;
+ const myRank=mates.slice().sort((a,b)=>dist(a,ball)-dist(b,ball)).indexOf(p);
+ const avgMate=mates.filter(m=>m!==p).reduce((s,m)=>s+dist(m,p),0)/Math.max(1,mates.length-1);
+ const remaining=training&&AI3_TRAIN_MULTIPLIER>1?Math.max(0,matchDuration-clockTicks):currentRemainingSafe();
+ return [p.role==='GK'?1:0,p.role==='DEF'?1:0,p.role==='MID'?1:0,p.role==='FWD'?1:0,
+  p.x/900,p.y/560,(ball.x-p.x)/900,(ball.y-p.y)/560,
+  dist(p,enemyGoalPoint)/1800,dist(p,ownGoalPoint)/1800,ownPoss,
+  myRank===0?0:myRank===1?.5:1,clamp(pressure/400,0,1),clamp(support/4,0,1),clamp(freeSpace/400,0,1),
+  clamp((myScore-theirScore)/3,-1,1),clamp(remaining/Math.max(1,matchDuration),0,1),ai3TeamTacticCode(p.side),
+  clamp(ball.vx*sg/16,-1,1),clamp(avgMate/900,0,1)];
+}
+function currentRemainingSafe(){return Math.max(0,matchDuration-(clockTicks||0));}
+function ai3TeamState(side){
+ const sg=side==='blue'?1:-1,own=owner?owner.side===side?'own':'enemy':'free';
+ const zone=ball.x*sg<-300?'back':ball.x*sg>300?'front':'middle';
+ const my=score[side==='blue'?0:1],opp=score[side==='blue'?1:0],diff=my-opp;
+ const scoreBand=diff>0?'lead':diff<0?'trail':'level',timeBand=currentRemainingSafe()<30?'late':currentRemainingSafe()<90?'mid':'early';
+ const pressure=owner?Math.min(...oppOf(owner).map(o=>dist(o,owner))):400;
+ const tactic=typeof teamTactic==='function'?teamTactic({side,role:'MID'}):teamTacticRaw(side);return [own,zone,scoreBand,timeBand,pressure<80?'pressured':'stable',tactic].join('|');
+}
+function ai3TeamSharedReward(p){
+ const mates=teamOf(p.side),opps=oppOf(p),rank=teamBallRank(p),own=owner&&owner.side===p.side,enemy=owner&&owner.side!==p.side;
+ let r=0;
+ if(own){r+=.025;if(p.action===1&&p.role!=='GK')r+=.025;if(p.role==='FWD'&&p.action===4&&(p.x-owner.x)*sign(p)>90)r+=.065;if(p.role==='MID'&&p.action===1)r+=.035;if(p.role==='DEF'&&p.x*sign(p)<ball.x*sign(p)-120)r+=.03;}
+ if(enemy){if(rank===0&&p.action===0)r+=.075;if(rank===1&&p.action===3)r+=.055;if(rank>1&&p.role==='DEF'&&p.action===2)r+=.025;}
+ if(!owner){if(rank===0&&p.action===0)r+=.04;if(rank===1&&p.action===3)r+=.025;}
+ let crowd=0;for(const m of mates){if(m!==p&&dist(m,p)<42)crowd++;}r-=crowd*.018;
+ const behindBall=mates.filter(m=>m.role==='DEF'&&m!==p&&(m.x-ball.x)*sign(p)<0).length;
+ if((own||lastTouch?.side===p.side)&&p.role==='DEF'&&behindBall>=1)r+=.018;
+ ai3TeamRewardCount++;return clamp(r,-.12,.18);
+}
+function ai3CriticValue(side,key){return Number(ai3TeamBrains[side].critic[key])||0;}
+function ai3TrainNetwork(side,exp,learningRate=AI3_LR){
+ if(!exp||!Array.isArray(exp.f)||exp.f.length!==AI3_INPUTS||!Array.isArray(exp.n)||exp.n.length!==AI3_INPUTS)return 0;
+ const net=ai3TeamBrains[side],forward=ai3Forward(side,exp.f),next=ai3Forward(side,exp.n),a=clamp(Math.round(exp.a||0),0,AI3_ACTIONS-1);
+ const target=clamp((Number(exp.r)||0)+(exp.done?0:AI3_GAMMA*Math.max(...next.out)),-8,8);
+ const error=clamp(target-forward.out[a],-2.5,2.5),hidden=forward.hidden;
+ const oldW2=net.w2.slice();
+ net.b2[a]=clamp(net.b2[a]+learningRate*error,-4,4);
+ for(let h=0;h<AI3_HIDDEN;h++)net.w2[h*AI3_ACTIONS+a]=clamp(net.w2[h*AI3_ACTIONS+a]+learningRate*error*hidden[h],-3,3);
+ for(let h=0;h<AI3_HIDDEN;h++){
+  const grad=error*oldW2[h*AI3_ACTIONS+a]*(1-hidden[h]*hidden[h]);
+  net.b1[h]=clamp(net.b1[h]+learningRate*grad,-3,3);
+  for(let i=0;i<AI3_INPUTS;i++)net.w1[i*AI3_HIDDEN+h]=clamp(net.w1[i*AI3_HIDDEN+h]+learningRate*grad*exp.f[i],-3,3);
+ }
+ net.updates++;ai3ReplaySampleCount++;return Math.abs(error);
+}
+function ai3PushReplay(side,exp){
+ const buf=ai3ReplayBuffers[side];exp.priority=Math.max(.025,Number(exp.priority)||.05);buf.push(exp);if(buf.length>360)buf.shift();
+}
+function ai3SampleReplay(side,count){
+ const buf=ai3ReplayBuffers[side];if(!buf.length)return[];const out=[],pool=buf.slice();
+ for(let k=0;k<Math.min(count,pool.length);k++){
+  const weights=pool.map(e=>Math.pow(Math.max(.025,e.priority||.05),.62)),sum=weights.reduce((a,b)=>a+b,0)||1;let r=Math.random()*sum,idx=weights.length-1;
+  for(let i=0;i<weights.length;i++){r-=weights[i];if(r<=0){idx=i;break;}}
+  out.push(pool[idx]);pool.splice(idx,1);
+ }
+ return out;
+}
+function ai3ReplayBatch(side,count=5){
+ const team=ai3TeamBrains[side],batch=ai3SampleReplay(side,count);for(const e of batch)ai3TrainNetwork(side,e,AI3_LR*.72);team.replayUpdates+=batch.length;team.pending=0;
+}
+function ai3RecordOpponentEvent(p,target,kind){
+ const observedSide=p.side==='blue'?'red':'blue',m=ai3OpponentModels[observedSide];m.samples++;ai3OpponentObservations++;
+ if(kind==='shot'){m.shots++;return;}
+ if(kind==='pass'){
+  m.passes++;const forward=(target.x-p.x)*sign(p);if(forward>80)m.forwardPasses++;
+  if(target.y<p.y-30)m.leftPasses++;else if(target.y>p.y+30)m.rightPasses++;
+  if(Math.abs(target.y-p.y)>160)m.widePasses++;
+ }else if(kind==='dribble')m.dribbles++;
+}
+function ai3ObservedStyle(side){const m=ai3OpponentModels[side],total=m.samples||0;if(total<8)return null;const shot=m.shots/total,wide=m.widePasses/Math.max(1,m.passes),forward=m.forwardPasses/Math.max(1,m.passes);if(shot>.32)return'lowblock';if(wide>.45)return'lowblock';if(forward>.62)return'highpress';return null;}
+const ai3PreviousTeamTactic=teamTactic;
+teamTactic=function(p){
+ if(training&&p.side==='red')return AI3_SCENARIOS[ai3ScenarioIndex%AI3_SCENARIOS.length].tactic;
+ const base=ai3PreviousTeamTactic(p),remaining=currentRemainingSafe(),my=score[p.side==='blue'?0:1],opp=score[p.side==='blue'?1:0],diff=my-opp;
+ if(remaining<35){if(diff<0)return 'highpress';if(diff>0)return 'lowblock';}
+ if(remaining<75&&diff<0)return 'counter';
+ const observed=ai3ObservedStyle(p.side);return observed&&diff<=0?observed:base;
+};
+const ai3PreviousProbs=probs;
+probs=function(p,s,nearest){
+ const base=ai3PreviousProbs(p,s,nearest),nn=ai3Forward(p.side,ai3Features(p)).out;
+ const logits=base.map((v,i)=>Math.log(Math.max(.001,v))+clamp(nn[i]*.16,-.35,.35)),m=Math.max(...logits),ex=logits.map(x=>Math.exp(x-m)),sum=ex.reduce((a,b)=>a+b,0)||1;
+ return ex.map(x=>x/sum);
+};
+const ai3PreviousChooseAction=chooseAction;
+chooseAction=function(p,nearest){
+ const s=stateKey(p,nearest),features=ai3Features(p),nn=ai3Forward(p.side,features).out,row=policyRow(p,s),backup=row.slice();
+ for(let i=0;i<AI3_ACTIONS;i++)row[i]=clamp(row[i]+nn[i]*2.2,-4,4);
+ ai3PreviousChooseAction(p,nearest);
+ row.splice(0,row.length,...backup);
+ p.prevFeatures=features.slice();p.prevTeamState=ai3TeamState(p.side);
+ const last=p.actionHistory[p.actionHistory.length-1];if(last){last.features=features.slice();last.teamState=p.prevTeamState;}
+};
+const ai3PreviousUpdateLearning=updateLearning;
+updateLearning=function(p,next,terminal=false,extra=0){
+ if(!p||p.prevState===null||p.prevAction===null){if(p)p.lastBallX=ball.x;return;}
+ const side=p.side,net=ai3TeamBrains[side],features=Array.isArray(p.prevFeatures)?p.prevFeatures.slice():ai3Features(p),nextFeatures=ai3Features(p);
+ const state=p.prevTeamState||ai3TeamState(side),nextState=ai3TeamState(side),local=rewardFor(p),shared=ai3TeamSharedReward(p),reward=clamp(local*.72+shared*.55+(Number(extra)||0),-2.7,2.7);
+ const gamma=AI3_GAMMA,v=ai3CriticValue(side,state),nv=terminal?0:ai3CriticValue(side,nextState),tdCritic=reward+gamma*nv-v;
+ net.critic[state]=clamp(v+.045*tdCritic,-5,5);net.criticUpdates++;
+ const row=qRow(p,p.prevState),future=qRow(p,next),a=p.prevAction,target=reward+(terminal?0:gamma*Math.max(...future)),td=target-row[a];
+ row[a]=clamp(row[a]+.105*td,-8,8);
+ const exp={f:features,n:nextFeatures,a,r:reward,done:!!terminal,priority:Math.abs(td)+Math.abs(tdCritic)*.55+.03,agent:p.id};
+ ai3PushReplay(side,exp);ai3TrainNetwork(side,exp);net.pending++;
+ if(net.pending>=10)ai3ReplayBatch(side,5);
+ p.brain.updates++;totalUpdates++;p.lastBallX=ball.x;
+};
+const ai3PreviousPassLane=passLaneClearance;
+passLaneClearance=function(p,target){
+ let clear=ai3PreviousPassLane(p,target);const tx=target.x,ty=target.y,flight=clamp(hypot(tx-p.x,ty-p.y)/12,2,18);
+ for(const o of oppOf(p)){const predicted={x:clamp(o.x+o.vx*flight*.45,FIELD.l,FIELD.r),y:clamp(o.y+o.vy*flight*.45,FIELD.t,FIELD.b)};clear=Math.min(clear,pointSegmentDistance(predicted.x,predicted.y,p.x,p.y,tx,ty));}
+ return clear;
+};
+const ai3PreviousBestPass=bestPassTarget;
+bestPassTarget=function(p){
+ let best=null,bestScore=-1e9;const sg=sign(p);
+ for(const m of teamOf(p.side)){
+  if(m===p)continue;const d=dist(p,m);if(d<78||d>690)continue;
+  const flight=clamp(d/13,3,18),lead={x:clamp(m.x+m.vx*flight*.42,FIELD.l+30,FIELD.r-30),y:clamp(m.y+m.vy*flight*.42,FIELD.t+30,FIELD.b-30)};
+  const forward=(lead.x-p.x)*sg,space=Math.min(...oppOf(p).map(o=>dist(o,lead))),lane=passLaneClearance(p,lead),support=m.role==='MID'?14:m.role==='FWD'?22:m.role==='DEF'?5:-8;
+  let value=forward*.23+Math.min(space,250)*.31+Math.min(lane,190)*.42-d*.065+support;
+  if(forward<-25)value-=48;if(forward<-170)value-=35;if(lane<34)value-=95;else if(lane>105)value+=20;if(space<58)value-=42;
+  if(m.role==='FWD'&&forward>80)value+=16;if(m.role==='MID'&&p.role==='FWD')value+=10;
+  if(value>bestScore){bestScore=value;best=m;}
+ }
+ return best||ai3PreviousBestPass(p);
+};
+const ai3PreviousDribble=dribbleTarget;
+dribbleTarget=function(p){
+ const sg=sign(p),ys=[p.y-190,p.y-95,p.y,p.y+95,p.y+190],xs=[130,190,240];let best={x:clamp(p.x+sg*175,FIELD.l+50,FIELD.r-50),y:p.y},bestScore=-1e9;
+ for(const advance of xs)for(const y0 of ys){const probe={x:clamp(p.x+sg*advance,FIELD.l+45,FIELD.r-45),y:clamp(y0,FIELD.t+45,FIELD.b-45)};let clearance=330,closing=0;for(const o of oppOf(p)){const pred={x:o.x+o.vx*4,y:o.y+o.vy*4};const d=dist(probe,pred);clearance=Math.min(clearance,d);if(d<100)closing++;}const centrality=Math.abs(probe.y)*.055,turn=Math.abs(probe.y-p.y)*.055,forward=(probe.x-p.x)*sg;const value=Math.min(clearance,280)*.65+forward*.22-centrality-turn-closing*25;if(value>bestScore){bestScore=value;best=probe;}}
+ return best;
+};
+const ai3PreviousTargetFor=targetFor;
+targetFor=function(p,nearest){
+ const base=ai3PreviousTargetFor(p,nearest),rank=teamBallRank(p),own=owner&&owner.side===p.side,enemy=owner&&owner.side!==p.side;
+ let x=base.x,y=base.y;
+ if(!owner&&rank===0){x=ball.x+ball.vx*5-sign(p)*12;y=ball.y+ball.vy*5;}
+ if(enemy&&rank===1){const m=ai3OpponentModels[p.side],bias=m.leftPasses-m.rightPasses;if(Math.abs(bias)>2)y=clamp(y+(bias>0?-36:36),FIELD.t+45,FIELD.b-45);}
+ if(own&&p.role==='FWD'&&p.action===4){const laneY=p.homeY===0?(p.num%2?-150:150):p.homeY;y=clamp(y*.72+laneY*.28,FIELD.t+55,FIELD.b-55);}
+ return{x:clamp(x,FIELD.l+45,FIELD.r-45),y:clamp(y,FIELD.t+45,FIELD.b-45)};
+};
+const ai3PreviousAIPossession=aiPossession;
+aiPossession=function(p){
+ if(!p||owner!==p)return;
+ if(p.lastAIDecisionTick!==undefined&&tick-p.lastAIDecisionTick<12)return;p.lastAIDecisionTick=tick;
+ const sg=sign(p),goalX=enemyGoal(p),goal={x:goalX,y:0},distance=dist(ball,goal),pressure=Math.min(...oppOf(p).map(o=>dist(o,p))),pass=bestPassTarget(p);
+ const passDist=pass?dist(p,pass):999,lane=pass?passLaneClearance(p,{x:pass.x+pass.vx*6,y:pass.y+pass.vy*6}):0,space=pass?Math.min(...oppOf(p).map(o=>dist(o,pass))):0;
+ const forward=pass?(pass.x-p.x)*sg:-999,passSkill=stat(p,'PAS'),shootSkill=stat(p,'SHO'),pace=stat(p,'PAC');
+ let bestShotY=0,bestShot=0;const keeper=oppOf(p).find(o=>o.role==='GK');
+ for(const y of [-GOAL_HALF*.64,0,GOAL_HALF*.64]){
+  let blocker=240;for(const o of oppOf(p)){if(o===keeper)continue;const flight=clamp(distance/16,1,16),op={x:o.x+o.vx*flight*.35,y:o.y+o.vy*flight*.35};blocker=Math.min(blocker,pointSegmentDistance(op.x,op.y,ball.x,ball.y,goalX,y));}
+  const keeperGap=keeper?Math.abs(y-(keeper.y+keeper.vy*4)):90;
+  const quality=clamp((1-distance/980)*.52+(1-Math.abs(y-ball.y)/230)*.18+clamp(keeperGap/125,0,1)*.17+clamp(blocker/150,0,1)*.13,0,1);
+  if(quality>bestShot){bestShot=quality;bestShotY=y;}
+ }
+ const shotScore=bestShot*72+shootSkill*.17-pressure*.075+(p.role==='FWD'?6:p.role==='MID'?1:-10);
+ const passScore=pass?clamp(forward/500,-1,1)*22+clamp(lane/170,0,1)*26+clamp(space/220,0,1)*19+passSkill*.16-clamp(passDist/720,0,1)*10+(pass.role==='FWD'?8:pass.role==='MID'?5:0): -999;
+ const dribble=dribbleTarget(p),dribbleClear=Math.min(...oppOf(p).map(o=>dist(o,dribble))),dribbleForward=(dribble.x-p.x)*sg;
+ const dribbleScore=clamp(dribbleForward/250,0,1)*20+clamp(dribbleClear/240,0,1)*25+pace*.16-pressure*.11+(p.role==='FWD'?5:0);
+ const shotRange=p.role==='FWD'?690:p.role==='MID'?540:350;
+ const shouldShoot=distance<shotRange&&(distance<245||shotScore>Math.max(35,passScore+4,dribbleScore+9));
+ if(shouldShoot){const aim={x:goalX,y:bestShotY+rand(-1,1)*(100-shootSkill*.55)};kick(p,aim,clamp(13+shootSkill*.062,14,21),'shot');p.lastAIDecisionTick=tick;return;}
+ const pressurePass=pressure<96&&passScore>4;
+ if(pass&&lane>38&&space>48&&(passScore>dribbleScore+2||pressurePass||forward>180&&passScore>14)){
+  const flight=clamp(passDist/13,3,18);kick(p,{x:clamp(pass.x+pass.vx*flight*.42,FIELD.l+20,FIELD.r-20),y:clamp(pass.y+pass.vy*flight*.42,FIELD.t+20,FIELD.b-20)},clamp(9+passDist*.006+passSkill*.035,9,15),'pass');p.lastAIDecisionTick=tick;return;
+ }
+ if(pressure<48&&pass&&lane>28){kick(p,pass,clamp(9+passDist*.005,9,13),'pass');return;}
+ // If no high-quality action exists, retain possession and move into the best predicted lane.
+};
+const ai3PreviousKick=kick;
+kick=function(p,target,power,kind='pass'){if(p&&target&&kind!=='shot')ai3RecordOpponentEvent(p,target,'pass');else if(p&&kind==='shot')ai3RecordOpponentEvent(p,target||{x:enemyGoal(p),y:0},'shot');return ai3PreviousKick(p,target,power,kind);};
+const ai3PreviousSyncClock=syncSessionClock;
+syncSessionClock=function(){
+ if(training&&matchActive){const elapsed=Math.floor(ai3TrainingFrames/60);if(elapsed>clockTicks){const passed=elapsed-clockTicks;clockTicks=Math.min(matchDuration,elapsed);if(owner)statEvent(owner.side,'possessionSeconds',passed);}if(clockTicks>=matchDuration)finishTraining();return;}
+ ai3PreviousSyncClock();
+};
+const ai3PreviousRemaining=currentRemaining;
+currentRemaining=function(){if(training&&matchActive||training&&matchPaused)return Math.max(0,matchDuration-clockTicks);return ai3PreviousRemaining();};
+const ai3PreviousPrepare=prepareSession;
+prepareSession=function(kind,duration){const ok=ai3PreviousPrepare(kind,duration);if(ok){ai3TrainingFrames=0;ai3TrainingRealStart=kind==='training'?Date.now():0;ai3ScenarioIndex=0;ai3LastScenario=-1;ai3ReplaySampleCount=0;ai3TeamRewardCount=0;ai3OpponentObservations=0;ai3LastPass=null;if(kind==='training'){manual=false;training=true;ai3TeamBrains.blue.scenarios++;ai3TeamBrains.red.scenarios++;}}return ok;};
+const ai3PreviousStep=step;
+step=function(){if(training&&matchActive){ai3TrainingFrames++;const scenario=Math.floor(ai3TrainingFrames/(30*60))%AI3_SCENARIOS.length;if(scenario!==ai3ScenarioIndex){ai3ScenarioIndex=scenario;ai3TeamBrains.red.scenarios++;const s=AI3_SCENARIOS[scenario];addLearningLog({type:'scenario',headline:`자체 대전 상대 전술 변경 · ${s.label}`,detail:`가상 경기 ${Math.floor(ai3TrainingFrames/60)}초 · 새 상대 스타일 적용`});}}ai3PreviousStep();};
+const ai3PreviousFinishTraining=finishTraining;
+finishTraining=function(){if(!training)return;const simulatedSeconds=clockTicks,realSeconds=ai3TrainingRealStart?Math.max(.1,(Date.now()-ai3TrainingRealStart)/1000):0,experienceCount=ai3ReplayBuffers.blue.length+ai3ReplayBuffers.red.length,replayCount=ai3ReplaySampleCount,scenario=AI3_SCENARIOS[ai3ScenarioIndex%AI3_SCENARIOS.length].label;ai3LastTrainingSim=simulatedSeconds;ai3LastTrainingReal=realSeconds;ai3LastTrainingScenario=scenario;ai3PreviousFinishTraining();ai3SaveAll();addLearningLog({type:'ai3',headline:'AI 3.0 고속 자체 대전 완료',detail:`가상 경기 ${simulatedSeconds}초 · 실제 ${realSeconds.toFixed(1)}초 · ${AI3_TRAIN_MULTIPLIER}배 처리 · 경험 재생 ${replayCount}회 · 저장 경험 ${experienceCount}개 · 마지막 상대 전술 ${scenario}`,score:score.slice(),positive:0,negative:0});renderAiLab();};
+const ai3PreviousRenderLab=renderAiLab;
+renderAiLab=function(){ai3PreviousRenderLab();const speed=$('ai3SpeedLabel'),sim=$('ai3SimTime'),scenario=$('ai3Scenario'),replay=$('ai3ReplayCount'),opp=$('ai3OpponentCount'),critic=$('ai3CriticCount'),progress=$('ai3ProgressFill');if(speed)speed.textContent=training?`${AI3_TRAIN_MULTIPLIER}× 고속 자체 대전`: '고속 학습 준비 완료';if(sim)sim.textContent=`가상 ${formatClock(training?clockTicks:0)} / ${formatClock(matchDuration||180)}`;if(scenario)scenario.textContent=training?`상대 전술 · ${AI3_SCENARIOS[ai3ScenarioIndex%AI3_SCENARIOS.length].label}`:'상대 전술을 30초 가상 경기마다 순환';if(replay)replay.textContent=(ai3ReplaySampleCount+ai3TeamBrains.blue.replayUpdates+ai3TeamBrains.red.replayUpdates).toLocaleString();if(opp)opp.textContent=ai3OpponentObservations.toLocaleString();if(critic)critic.textContent=(ai3TeamBrains.blue.criticUpdates+ai3TeamBrains.red.criticUpdates).toLocaleString();if(progress)progress.style.width=`${training?clamp(clockTicks/Math.max(1,matchDuration)*100,0,100):0}%`;};
+const ai3PreviousExport=exportBackup;
+exportBackup=function(){const payload={app:'PITCH11',version:APP_VERSION,exportedAt:new Date().toISOString(),club:{cards,lineup,coins},brains,learningLogs,matchHistory,settings:{difficulty},career,ai3:{teamBrains:ai3TeamBrains,replayBuffers:ai3ReplayBuffers,opponentModels:ai3OpponentModels}};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`pitch11-ai3-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);toast('선수단·팀 AI 신경망·경험 재생·상대 분석까지 백업했어.');};
+importBackup=async function(file){if(!file)return;try{if(file.size>8*1024*1024)throw new Error('백업 파일이 8MB를 넘었어.');const data=JSON.parse(await file.text());if(data.app!=='PITCH11'||!data.club||!Array.isArray(data.club.cards)||!Array.isArray(data.club.lineup))throw new Error('PITCH 11 백업 파일이 아니야.');if(data.club.cards.length<5||data.club.cards.length>500||data.club.lineup.length!==5)throw new Error('선수 데이터 형식이 올바르지 않아.');const seen=new Set(),cleanCards=data.club.cards.filter(c=>c&&typeof c.id==='string'&&c.id.length<100&&typeof c.name==='string'&&c.name.length<60&&['GK','DEF','MID','FWD'].includes(c.role)&&['PAC','SHO','PAS','DEF','PHY'].every(k=>Number.isFinite(Number(c[k])))).filter(c=>{if(seen.has(c.id))return false;seen.add(c.id);return true;}).map(c=>({...c,name:c.name.slice(0,40),skill:String(c.skill||'팀 플레이').slice(0,50),rarity:['common','rare','epic','legend'].includes(c.rarity)?c.rarity:'common',rank:clamp(Math.round(Number(c.rank)||1),1,5),upgradeLevel:clamp(Math.round(Number(c.upgradeLevel)||0),0,5),...Object.fromEntries(['PAC','SHO','PAS','DEF','PHY'].map(k=>[k,clamp(Math.round(Number(c[k])),1,99)]))}));const validIds=new Set(cleanCards.map(c=>c.id)),line=data.club.lineup.slice(0,5);if(cleanCards.length<5||new Set(line).size!==5||line.some(id=>!validIds.has(id)))throw new Error('선수 카드 또는 선발 명단이 올바르지 않아.');if(!confirm('현재 게임 저장 데이터를 백업 파일 내용으로 교체할까?'))return;const ai3=data.ai3||{};localStorage.setItem(SAVE_KEY,JSON.stringify({cards:cleanCards,lineup:line,coins:clamp(Math.round(Number(data.club.coins)||0),0,9999999)}));localStorage.setItem(BRAIN_KEY,JSON.stringify(data.brains&&typeof data.brains==='object'?data.brains:{}));localStorage.setItem(LOG_KEY,JSON.stringify(Array.isArray(data.learningLogs)?data.learningLogs.slice(0,100):[]));localStorage.setItem(HISTORY_KEY,JSON.stringify(Array.isArray(data.matchHistory)?data.matchHistory.slice(0,30):[]));localStorage.setItem(SETTINGS_KEY,JSON.stringify(data.settings||{difficulty:'normal'}));if(typeof CAREER_KEY!=='undefined')localStorage.setItem(CAREER_KEY,JSON.stringify(data.career||freshCareer()));localStorage.setItem(AI3_TEAM_KEY,JSON.stringify(ai3.teamBrains||{}));localStorage.setItem(AI3_REPLAY_KEY,JSON.stringify(ai3.replayBuffers||{blue:[],red:[]}));localStorage.setItem(AI3_OPPONENT_KEY,JSON.stringify(ai3.opponentModels||{blue:ai3FreshOpponent(),red:ai3FreshOpponent()}));toast('PITCH 11 AI 3.0 백업을 불러왔어.');setTimeout(()=>location.reload(),450);}catch(e){toast(e.message||'백업 파일을 불러오지 못했어.');}finally{$('importSaveFile').value='';}};
+// AI lab telemetry helpers: all updates remain text-safe and optional so legacy saves never break.
+function ai3RefreshLabTelemetry(){
+ const speed=$('ai3SpeedLabel'),sim=$('ai3SimTime'),scenario=$('ai3Scenario'),replay=$('ai3ReplayCount'),opp=$('ai3OpponentCount'),critic=$('ai3CriticCount'),network=$('ai3NetworkCount'),progress=$('ai3ProgressFill'),status=$('trainingStatus');
+ const done=matchKind==='trainingDone'&&ai3LastTrainingSim>0,shownSeconds=training?clockTicks:(done?ai3LastTrainingSim:0);
+ if(speed)speed.textContent=training?`${AI3_TRAIN_MULTIPLIER}× 고속 자체 대전`: '6× 고속 학습 준비 완료';
+ if(sim)sim.textContent=`가상 ${formatClock(shownSeconds)} / ${formatClock(matchDuration||180)}`;
+ if(scenario)scenario.textContent=training?`상대 전술 · ${AI3_SCENARIOS[ai3ScenarioIndex%AI3_SCENARIOS.length].label}`:done?`마지막 훈련 · 실제 ${ai3LastTrainingReal.toFixed(1)}초 · 상대 전술 ${ai3LastTrainingScenario}`:'AI 자체 대전에서 6가지 상대 전술을 가상 30초마다 순환';
+ if(replay)replay.textContent=(ai3TeamBrains.blue.replayUpdates+ai3TeamBrains.red.replayUpdates).toLocaleString();
+ if(network)network.textContent=(ai3TeamBrains.blue.updates+ai3TeamBrains.red.updates).toLocaleString();
+ if(opp)opp.textContent=(ai3OpponentModels.blue.samples+ai3OpponentModels.red.samples).toLocaleString();
+ if(critic)critic.textContent=(ai3TeamBrains.blue.criticUpdates+ai3TeamBrains.red.criticUpdates).toLocaleString();
+ if(progress)progress.style.width=`${training?clamp(clockTicks/Math.max(1,matchDuration)*100,0,100):done?100:0}%`;
+ if(status){if(training)status.textContent=`6× 고속 AI 자체 대전 · 가상 ${formatClock(clockTicks)} / ${formatClock(matchDuration)} · 실제 약 ${Math.max(0,(Date.now()-ai3TrainingRealStart)/1000).toFixed(0)}초 진행`;else if(done)status.textContent=`훈련 완료 · 가상 ${formatClock(ai3LastTrainingSim)}를 실제 ${ai3LastTrainingReal.toFixed(1)}초에 처리 · 경험 재생과 팀 정책 저장 완료`;else status.textContent='훈련 대기 중 · 3분 가상 훈련은 약 30초가 목표야.';}
+}
+const ai3RenderTelemetryBase=renderAiLab;
+renderAiLab=function(){ai3RenderTelemetryBase();ai3RefreshLabTelemetry();};
+// Replace the main loop's simulation budget only: rendering still occurs solely in match view.
+const AI3_LOOP_PATCH_MARKER='PITCH11_AI3_LOOP_PATCHED';
+
+// Input controls
+window.addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(!document.body.classList.contains('immersive-match'))return;if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k))e.preventDefault();keys[k]=true;if(k==='q'&&!e.repeat&&!training&&matchActive)switchPlayer();if(k===' '&&!e.repeat&&!training&&manual&&matchActive)userKick(true);if(k==='e'&&!e.repeat&&!training&&manual&&matchActive)userKick(false);});window.addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;});window.addEventListener('blur',()=>{keys={};});document.addEventListener('visibilitychange',()=>{if(document.hidden&&matchActive){matchActive=false;matchPaused=true;pausedAt=Date.now();accumulator=0;keys={};if($('pauseOverlay')&&matchKind==='match')$('pauseOverlay').classList.add('show');updateHUD();renderAiLab();}});
+document.querySelectorAll('[data-move]').forEach(btn=>{const key=btn.dataset.move;const down=e=>{e.preventDefault();keys[key]=true;btn.setPointerCapture?.(e.pointerId);};const up=e=>{e.preventDefault();keys[key]=false;};btn.addEventListener('pointerdown',down);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>btn.addEventListener(ev,up));});document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('pointerdown',e=>{e.preventDefault();if(matchActive&&!training&&manual)userKick(btn.dataset.action==='shoot');}));
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view)));
+$('homeStartMatch').addEventListener('click',startMatch);
+$('difficulty').value=difficulty;$('difficulty').addEventListener('change',e=>{difficulty=['easy','normal','hard'].includes(e.target.value)?e.target.value:'normal';saveSettings();toast('상대 난이도 설정을 저장했어.');});
+document.querySelectorAll('[data-home-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.homeView)));
+$('resumeMatch').addEventListener('click',togglePause);$('pauseMenu').addEventListener('click',()=>$('exitToMenu').click());
+$('exitToMenu').addEventListener('click',()=>{$('pauseOverlay').classList.remove('show');matchActive=false;matchPaused=false;training=false;manual=true;matchKind='idle';accumulator=0;sessionStartedAt=0;saveBrains();setView('home');updateHUD();renderHomeDashboard();toast('메인 메뉴로 돌아왔어.');});
+$('resultPanel').addEventListener('click',e=>{if(e.target.id==='resultToMenu'){setView('home');}if(e.target.id==='resultReplay'){startMatch();}});
+$('playMode').addEventListener('click',()=>{if(training){toast('훈련 중에는 직접 조종으로 바꿀 수 없어. 훈련을 먼저 종료해 줘.');return;}manual=true;toast('직접 플레이 모드');updateHUD();});$('openLab').addEventListener('click',()=>setView('lab'));$('startMatch').addEventListener('click',startMatch);$('pauseMatch').addEventListener('click',togglePause);$('resetMatch').addEventListener('click',resetMatch);$('startTraining').addEventListener('click',startTraining);$('stopTraining').addEventListener('click',()=>{if(training){finishTraining();}});$('resumeTraining').addEventListener('click',togglePause);$('refreshLab').addEventListener('click',renderAiLab);$('exportSave').addEventListener('click',exportBackup);$('importSave').addEventListener('click',()=>$('importSaveFile').click());$('importSaveFile').addEventListener('change',e=>importBackup(e.target.files?.[0]));$('switchPlayer').addEventListener('click',switchPlayer);$('goMatch').addEventListener('click',()=>{applyLineup();startMatch();});$('saveSquad').addEventListener('click',()=>{saveClub();applyLineup();toast('선수단 저장 완료');});$('bestLineup').addEventListener('click',autoBest);$('openPack').addEventListener('click',openPack);$('closeReveal').addEventListener('click',()=>$('revealOverlay').classList.remove('show'));$('useNewCard').addEventListener('click',()=>{$('revealOverlay').classList.remove('show');setView('club');selectedSlot=SLOT_ROLES.indexOf(getCard(lastPulledId).role);if(selectedSlot<0)selectedSlot=0;renderClub();putInLineup(lastPulledId);});$('toClub').addEventListener('click',()=>setView('club'));
+$('collection').addEventListener('click',e=>{const b=e.target.closest('[data-equip]');if(b)putInLineup(b.dataset.equip);const s=e.target.closest('[data-slot]');if(s){selectedSlot=Number(s.dataset.slot);renderClub();}});$('lineupTop').addEventListener('click',e=>{const s=e.target.closest('[data-slot]');if(s){selectedSlot=Number(s.dataset.slot);renderClub();}});$('lineupMid').addEventListener('click',e=>{const s=e.target.closest('[data-slot]');if(s){selectedSlot=Number(s.dataset.slot);renderClub();}});$('lineupBack').addEventListener('click',e=>{const s=e.target.closest('[data-slot]');if(s){selectedSlot=Number(s.dataset.slot);renderClub();}});$('filters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;currentFilter=b.dataset.filter;document.querySelectorAll('#filters button').forEach(x=>x.classList.toggle('active',x===b));renderCollection();});
+function loop(now=performance.now()){try{renderFrame++;if(!lastLoopAt)lastLoopAt=now;const frameMs=Math.min(100,Math.max(0,now-lastLoopAt));lastLoopAt=now;if(matchActive){const simRate=(training?AI3_TRAIN_MULTIPLIER:1);accumulator+=frameMs*simRate;let steps=0;const fixed=1000/60,maxSteps=training?40:5;while(accumulator>=fixed&&steps<maxSteps&&matchActive){step();accumulator-=fixed;steps++;}if(steps===maxSteps)accumulator=Math.min(accumulator,fixed*maxSteps);}else accumulator=0;const matchVisible=$('match').classList.contains('active');if(matchVisible)draw();if(matchActive&&renderFrame%12===0)updateHUD();if($('lab').classList.contains('active')&&renderFrame%30===0)renderAiLab();}catch(err){console.error('PITCH 11 game loop error:',err);loopErrorCount++;if(!loopErrorShown){loopErrorShown=true;toast('게임 오류를 감지했어. 자동 일시정지 후 데이터를 저장할게.');}if(matchActive){matchActive=false;matchPaused=true;pausedAt=Date.now();accumulator=0;saveBrains();updateHUD();renderAiLab();}}finally{requestAnimationFrame(loop);}}ensureClub();initMatch();renderClub();updateWallet();renderAiLab();renderHomeDashboard();updateFieldView();$('difficulty').value=difficulty;loop();window.addEventListener('beforeunload',()=>{saveClub();saveBrains();saveLearningLogs();saveMatchHistory();});
+
+if('serviceWorker' in navigator && (location.protocol==='https:' || location.hostname==='localhost')){
+ navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('PITCH 11 오프라인 캐시 등록 실패:',err));
+}
+
+let deferredInstallPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;$('installApp').hidden=false;});$('installApp').addEventListener('click',async()=>{if(!deferredInstallPrompt){toast('크롬 메뉴에서 앱 설치를 선택해 줘.');return;}deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;$('installApp').hidden=true;});
+if(location.protocol==='file:'){setSaveStatus('이 기기에 자동 저장 · PWA 설치는 HTTPS 배포 필요');}
+})();
+</script>
+</body>
+</html>
